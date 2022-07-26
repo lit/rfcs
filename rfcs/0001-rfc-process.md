@@ -87,8 +87,8 @@ You may get this indication in several ways, from informal to formal:
     1. Add the RFC file to /rfcs in a markdown file named `NNNN-_descriptive-name_.md`
         1. Note the `NNNN` is literal. RFCs will not have an assigned RFC number when first opened.
 3. Open an RFC pull request
-    2. Optionally share the draft on [GH discussions](https://github.com/lit/lit/discussions) or [Slack](https://lit.dev/slack-invite/) before opening a pull request
-    3. Once opened, update the PR with a link to the PR in the metadata
+    1. Optionally share the draft on [GH discussions](https://github.com/lit/lit/discussions) or [Slack](https://lit.dev/slack-invite/) before opening a pull request
+    2. Once opened, update the PR with a link to the RFC PR in the metadata. This allows readers of the RFCs to find the review discussions.
 
 ### Discussion and Iteration
 
@@ -96,7 +96,7 @@ RFCs must be discussed and reviewed by the relevant maintainers, Lit project lea
 
 #### Reviewers
 
-Different areas of the Lit project have different primary maintainers. We will identify them and leadership who can approve RFCs _here_. RFCs must be approved by leadership before moving to accepted stage and being merged.
+RFCs must be reviewed by Lit project leadership and by project area maintainers. Lit project leadership who can approve RFCs are listed in the lit/rfcs repo's [CODEOWNERS](../CODEOWNERS) file. RFCs must be approved by leadership before moving to accepted stage and being merged. Area maintainers are sometimes identifiable by who is active on certain projects in the lit/lit monorepo, but the Lit team can add the appropriate people as reviews if it's unclear.
 
 #### Timeline
 
