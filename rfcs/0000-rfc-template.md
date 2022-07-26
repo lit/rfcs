@@ -28,7 +28,7 @@ Describe the change in detail. Include API changes and usage examples. Add your 
 
 ### Implementation Plan
 
-Is there anything important to note about implementation? Can it be done in a single PR or will it needs to be staged out across several.
+Is there anything important to note about implementation? Can it be done in a single PR or will it needs to be staged out across several?
 
 ### Backward Compatibility
 

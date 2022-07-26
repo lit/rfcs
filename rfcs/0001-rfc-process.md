@@ -27,7 +27,7 @@ RFC refers to the IETF's [Request For Comments](https://en.wikipedia.org/wiki/Re
 
 For Lit, RFCs are markdown files in the lit/rfcs repository.
 
-RFCs have a structure as defined in the RFC template (_TODO_), including these metadata and sections (the RCF template will include more descriptions):
+RFCs have a structure as defined in the [RFC template](./0000-rfc-template.md), including these metadata and sections (the RCF template will include more descriptions):
 
 * Champion(s): The people making and maintaining the proposal. This can change over time.
 * Stage: Accepted, Deprecated, Implemented
@@ -78,7 +78,7 @@ You may get this indication in several ways, from informal to formal:
 
 * A feature request issue is closed with a request to open an RFC
 * A core team member directly invites you to open an RFC from a community or support channel like GitHub Discussions, Slack, or Twitter
-* You open a "RRFC" (Requesting Request For Comment) issue in lit/rfcs and get positive feedback 
+* You open a "[RRFC](https://github.com/lit/rfcs/issues/new)" (Requesting Request For Comment) issue in lit/rfcs and get positive feedback 
 
 ### Opening an RFC
 
@@ -87,7 +87,7 @@ You may get this indication in several ways, from informal to formal:
     1. Add the RFC file to /rfcs in a markdown file named `NNNN-_descriptive-name_.md`
         1. Note the `NNNN` is literal. RFCs will not have an assigned RFC number when first opened.
 3. Open an RFC pull request
-    2. Optionally share the draft on GH discussions or Slack before opening a pull request
+    2. Optionally share the draft on [GH discussions](https://github.com/lit/lit/discussions) or [Slack](https://lit.dev/slack-invite/) before opening a pull request
     3. Once opened, update the PR with a link to the PR in the metadata
 
 ### Discussion and Iteration
@@ -124,7 +124,7 @@ Small changes to RFCs can be made to:
 
 ### Implementation
 
-As RFCs are implemented, they should be updated to indicate so. The status is updated to IMPLEMENTED and relevant PRs linked.
+As RFCs are implemented, they should be updated to indicate so. The status is updated to *Implemented* and relevant PRs linked.
 
 ## Other RFC Processes
 
