@@ -1,3 +1,9 @@
+---
+Status: Accepted
+Champions: @justinfagnani
+PR:
+---
+
 # Lit RFC Process
 
 The Lit RFC ("request for comment") process is a way for "substantial" changes to Lit to be proposed, discussed, designed, refined, and ultimately reach consensus before being implemented or merged into the Lit core libraries.
@@ -21,7 +27,7 @@ RFC refers to the IETF's [Request For Comments](https://en.wikipedia.org/wiki/Re
 
 For Lit, RFCs are markdown files in the lit/rfcs repository.
 
-RFCs have a structure as defined in the [RFC template](./rfcs/0000-rfc-template.md), including these metadata and sections:
+RFCs have a structure as defined in the [RFC template](./0000-rfc-template.md), including these metadata and sections:
 
 * Champion(s): The people making and maintaining the proposal. This can change over time.
 * Stage: Active, Implemented, Deprecated
@@ -101,7 +107,7 @@ RFCs must be discussed and reviewed by the relevant maintainers, Lit project lea
 
 #### Reviewers
 
-RFCs must be reviewed by Lit project leadership and by project area maintainers. Lit project leadership who can approve RFCs are listed in the lit/rfcs repo's [CODEOWNERS](./CODEOWNERS) file. RFCs must be approved by leadership before moving to active stage and being merged. Area maintainers are sometimes identifiable by who is active on certain projects in the lit/lit monorepo, but the Lit team can add the appropriate people as reviews if it's unclear.
+RFCs must be reviewed by Lit project leadership and by project area maintainers. Lit project leadership who can approve RFCs are listed in the lit/rfcs repo's [CODEOWNERS](../CODEOWNERS) file. RFCs must be approved by leadership before moving to active stage and being merged. Area maintainers are sometimes identifiable by who is active on certain projects in the lit/lit monorepo, but the Lit team can add the appropriate people as reviews if it's unclear.
 
 #### Timeline
 
