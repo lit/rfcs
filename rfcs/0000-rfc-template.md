@@ -1,12 +1,12 @@
 ---
-Status: Accepted
-Champions: @justinfagnani
-PR:
+Status: Active
+Champions: {{ your_github_username }}
+PR: {{ update_with_pr_number }}
 ---
 
 # {{ TITLE }}
 
-Brief summary paragraph of the RFC.
+Brief summary paragraph describing the RFC.
 
 ## Objective
 
@@ -26,13 +26,15 @@ Why is the RFC neccessary? What background information is needed to understand w
 
 Describe the change in detail. Include API changes and usage examples. Add your own sub-headings as necessary.
 
+## Implementation Considerations
+
 ### Implementation Plan
 
-Is there anything important to note about implementation? Can it be done in a single PR or will it needs to be staged out across several?
+Is there anything important to note about implementation plan? Can it be done in a single PR or will it need to be staged out across several?
 
 ### Backward Compatibility
 
-Backwards compatibility is extremely important to Lit, especially the core libraries. Does this proposal break backwards compatibility? Are there workarounds?
+Backwards compatibility is extremely important to Lit, especially in the core libraries. Does this proposal break backwards compatibility? Are there workarounds?
 
 ### Testing Plan
 
@@ -50,9 +52,10 @@ Is this proposal for a feature that could be interoperable across web components
 
 What impact will this proposal have on security? Does the proposal require a security review? (We have a security team available for reviews)
 
-We especially care about the handling of untrusted user-inputs by library code so that we contnue to prevent XSS vectors.
+We especially care about the handling of untrusted user input by library code so that we contnue to prevent XSS vectors.
 
 ### Documentation Plan
+
 Do we need to create or update any documentation to complete this proposal? Does related documentation have a clear home in our docs outline? What playground examples or tutorials should be created?
 
 ## Downsides

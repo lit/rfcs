@@ -27,7 +27,7 @@ RFC refers to the IETF's [Request For Comments](https://en.wikipedia.org/wiki/Re
 
 For Lit, RFCs are markdown files in the lit/rfcs repository.
 
-RFCs have a structure as defined in the [RFC template](./0000-rfc-template.md), including these metadata and sections (the RCF template will include more descriptions):
+RFCs have a structure as defined in the [RFC template](./0000-rfc-template.md), including these metadata and sections:
 
 * Champion(s): The people making and maintaining the proposal. This can change over time.
 * Stage: Active, Implemented, Deprecated
@@ -74,7 +74,7 @@ The Lit project also has a labs process for pre-production experimentation and f
 
 RFCs go through the following stages during their lifetime:
 
-* **Proposed** When an RFC is proposed in an open pull request and being reviewed and iterated on. This is not a state recorded in the RFC metadata, so all PRF PRs will start with a state of `Active`.
+* **Proposed** When an RFC is proposed in an open pull request and being reviewed and iterated on. This is not a state recorded in the RFC metadata, so all RFC PRs will start with a state of `Active`.
 * **Rejected** When an RFC is rejected and its PR closed.
 * **Active** When an RFC has been accepted, and its PR merged, but hasn't yet been implemented.
 * **Implemented** When an RFC has been implemented and its feature released.
@@ -125,7 +125,7 @@ RFC stakeholders may decide that RFCs need or could benefit from live community 
 
 After being accepted and moved to the `Active` stage, RFCs are intended to stay _mostly_ unchanged. The *design* review and feedback will have taken place in the RFC PR review.
 
-However, it's often the case that designs must be chenged due to implementation feedback. In this case `Active` RFCs can be updated via additional PRs. Implementation PRs should note when they diverge from an RFC and create a parallel RFP update PR.
+However, it's often the case that designs must be chenged due to implementation feedback. In this case `Active` RFCs can be updated via additional PRs. Implementation PRs should note when they diverge from an RFC and create a parallel RFC update PR.
 
 Small changes to RFCs can be made to:
 
