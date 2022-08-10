@@ -30,7 +30,7 @@ For Lit, RFCs are markdown files in the lit/rfcs repository.
 RFCs have a structure as defined in the [RFC template](./0000-rfc-template.md), including these metadata and sections (the RCF template will include more descriptions):
 
 * Champion(s): The people making and maintaining the proposal. This can change over time.
-* Stage: Accepted, Deprecated, Implemented
+* Stage: Active, Implemented, Deprecated
 * Summary
 * Objective (goals and non-goals)
 * Motivation (background)
@@ -70,6 +70,17 @@ The Lit project also has a labs process for pre-production experimentation and f
 
 ## RFC Process
 
+### Stages
+
+RFCs go through the following stages during their lifetime:
+
+* **Proposed** When an RFC is proposed in an open pull request and being reviewed and iterated on. This is not a state recorded in the RFC metadata, so all PRF PRs will start with a state of `Active`.
+* **Rejected** When an RFC is rejected and its PR closed.
+* **Active** When an RFC has been accepted, and its PR merged, but hasn't yet been implemented.
+* **Implemented** When an RFC has been implemented and its feature released.
+* **Withdrawn** When a *previously accepted* RFC has been rejected or withdrawn due to new information, such as implementation difficulty.
+* **Deprecated** When a *previously accepted*, and possibly implemented RFC has been superceded by a new RFC.
+
 ### Before opening an RFC
 
 RFCs involve more work than an issue, both to open one and to review one. Before opening an RFC is it a good idea to get some indication of interest from the Lit core team or strong support from the community.
@@ -88,7 +99,7 @@ You may get this indication in several ways, from informal to formal:
         1. Note the `NNNN` is literal. RFCs will not have an assigned RFC number when first opened.
 3. Open an RFC pull request
     1. Optionally share the draft on [GH discussions](https://github.com/lit/lit/discussions) or [Slack](https://lit.dev/slack-invite/) before opening a pull request
-    2. Once opened, update the PR with a link to the RFC PR in the metadata. This allows readers of the RFCs to find the review discussions.
+    2. Once opened, update the RFC with a link to the RFC PR in the metadata. This allows readers of the RFCs to find the review discussions.
 
 ### Discussion and Iteration
 
@@ -96,7 +107,7 @@ RFCs must be discussed and reviewed by the relevant maintainers, Lit project lea
 
 #### Reviewers
 
-RFCs must be reviewed by Lit project leadership and by project area maintainers. Lit project leadership who can approve RFCs are listed in the lit/rfcs repo's [CODEOWNERS](../CODEOWNERS) file. RFCs must be approved by leadership before moving to accepted stage and being merged. Area maintainers are sometimes identifiable by who is active on certain projects in the lit/lit monorepo, but the Lit team can add the appropriate people as reviews if it's unclear.
+RFCs must be reviewed by Lit project leadership and by project area maintainers. Lit project leadership who can approve RFCs are listed in the lit/rfcs repo's [CODEOWNERS](../CODEOWNERS) file. RFCs must be approved by leadership before moving to active stage and being merged. Area maintainers are sometimes identifiable by who is active on certain projects in the lit/lit monorepo, but the Lit team can add the appropriate people as reviews if it's unclear.
 
 #### Timeline
 
@@ -104,7 +115,7 @@ Many RFC processes have a prescribed timeline for discussion. We aren't yet sure
 
 #### Acceptance
 
-Once accepted, RFCs are assigned an RFC number and pull requests are updated and merged. This means that all RFCs in lit/rfcs start as accepted. Rejected RFC pull requests are closed.
+Once accepted, RFCs are assigned an RFC number and pull requests are updated and merged. This means that all RFCs in lit/rfcs start as active. Rejected RFC pull requests are closed.
 
 #### RFC Meetings
 
@@ -112,15 +123,17 @@ RFC stakeholders may decide that RFCs need or could benefit from live community 
 
 ### Updates and Amendments
 
-After being accepted RFCs are intended to mostly stay unchanged.
+After being accepted and moved to the `Active` stage, RFCs are intended to stay _mostly_ unchanged. The *design* review and feedback will have taken place in the RFC PR review.
 
-Major changes proposed to an RFC must be done in a new RFC. If a new RFC deprecates a previous RFC, it must mark the previous RFC as deprecated with a link to the new RFC. Otherwise the new RFC should update the previous RFC with a link and callouts to the new RFCs in relevant places.
+However, it's often the case that designs must be chenged due to implementation feedback. In this case `Active` RFCs can be updated via additional PRs. Implementation PRs should note when they diverge from an RFC and create a parallel RFP update PR.
 
 Small changes to RFCs can be made to:
 
 * Add clarifications
 * Update metadata and other non-design text (examples, documentation)
-* Minor changes to implementation, possibly based on implementor feedback
+* Changes to implementation, possibly based on implementor feedback
+
+_Major_ changes proposed to an RFC, such as an alternative to the feature or very different public API and behavior should be done in a new RFC. If a new RFC deprecates a previous RFC, it must mark the previous RFC as deprecated with a link to the new RFC. Otherwise the new RFC should update the previous RFC with a link and callouts to the new RFCs in relevant places.
 
 ### Implementation
 
@@ -133,3 +146,4 @@ The projects have served as inspiration for our process:
 * [Ember](https://github.com/emberjs/rfcs)
 * [npm](https://github.com/npm/rfcs)
 * [Fuchsia](https://fuchsia.googlesource.com/fuchsia/+/refs/heads/main/docs/contribute/governance/rfcs/rfc_process.md)
+* [Vue](https://github.com/vuejs/rfcs)
