@@ -2,4 +2,4 @@ blank_issues_enabled: true
 contact_links:
   - name: RFC
     url: https://github.com/lit/rfcs/edit/main/rfcs/0000-rfc-template.md
-    about: To open a formal RFC, make a PR that copies the issue template linked here to a new file named with the format `NNNN-descriptive-name.md`. See [Opening an RFC](https://github.com/lit/rfcs#opening-an-rfc) for more details.
+    about: To open a formal RFC, make a PR that copies the issue template linked here to a new file named with the format `NNNN-descriptive-name.md`. See https://github.com/lit/rfcs#opening-an-rfc for more details.
