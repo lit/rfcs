@@ -1,6 +1,6 @@
 ---
 name: RRFC
-about: Requesting Request For Comment
+about: Requesting Request For Comment. If you have an idea for an RFC and want to get feedback before opening a formal RFC, use this issue template to describe your idea.
 title: '[RRFC] <title>'
 assignees:
 labels:
