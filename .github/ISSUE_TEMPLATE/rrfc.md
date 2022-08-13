@@ -13,18 +13,18 @@ labels:
 Why do you want this feature or change?
 -->
 
-### Example
+## Example
 <!--
 Example(s) of what this proposal would change - code or behavior.
 -->
 
-### How
+## How
 
-#### Current Behaviour
+### Current Behavior
 
-#### Desired Behaviour
+### Desired Behavior
 
-### References
+## References
 <!--
 Examples:
 * Related to #0
