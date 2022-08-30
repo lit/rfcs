@@ -66,11 +66,50 @@ This validator runs on a form group and gets passed all values of the children a
 ### How to define a form
 
 #### Defining the model 
-The model for a form can be created similar to Angular Reactive Forms through a `FormBuilder` class. Every control must be initialized with an initial value. 
+The model for a form can be created similar to Angular Reactive Forms through a `FormBuilder` class. Every control must be initialized with an initial value. The following example is taken from @UserGalilelo's prototype:
+
+````js
+fb = new FormBuilder(this);
+
+form = this.fb.group({
+    user: this.fb.group({
+        name: this.fb.control(''),
+        surname: this.fb.control(''),
+    }),
+    consent: this.fb.control(false)
+}, {
+    validators: [],
+    asyncValidators: [],
+});
 
 
+// Binding (dotted syntax for nested FormGroups)
+render() {
+  const { bind } = this.form;
+  
+  return html`
+    <input type="text" ${bind('user.name')}>
+    <input type="text" ${bind('user.surname')}>
+    <input type="text" ${bind('consent')}>
+  `
+}
+````
+
+The model and the elements are connected by use of a directive. There is an additional directive which simplifies rendering a form array, similar to `repeat` which takes an instance of form array as a parameter and as a second parameter takes a render function, which the directive uses to render an individual item of the form array. 
+
+The `bind` directive subscribes to changes to the element via event listeners and updates the model accordingly. There is an abstraction called an accessor, which can be defined for web components specifying details like
+- change event
+- how to trigger an element's builtin validation (if exists)
+- how to get and set the element's current value
+- how to set an error message on the element (if available)
+- how to change the element's state
+
+Similarly, if the model is updated, the directive will update the element. 
 
 ## Implementation Considerations
+So far the only feature that really is Lit-dependant is the use of directives. Maybe directives can be provided, but potentially an API along the lines of `formControl.registerElement(htmlElement)` can be provided as a substitute to support none Lit environments?
+
+The prototype uses `rxjs` heavily. Is an external dependency a problem / show stopper?  
 
 ### Implementation Plan
 
@@ -90,22 +129,20 @@ What impact will this proposal have on performance and code size? What benchmark
 
 ### Interoperability
 
-Is this proposal for a feature that could be interoperable across web components not written in Lit? Does it create a tight coupling between components written in Lit? Could it be a [Web Components Community Group](https://github.com/w3c/webcomponents-cg) [Community Protocol](https://github.com/webcomponents-cg/community-protocols)?
+This could potentially be implemented to be usable in any web component environment. 
 
 ### Security Impact
 
-What impact will this proposal have on security? Does the proposal require a security review? (We have a security team available for reviews)
-
-We especially care about the handling of untrusted user input by library code so that we contnue to prevent XSS vectors.
+Since we only read and write value and states to existing element's this shouldn't have much of a security implication. 
 
 ### Documentation Plan
 
-Do we need to create or update any documentation to complete this proposal? Does related documentation have a clear home in our docs outline? What playground examples or tutorials should be created?
+A pretty good README should be part of the npm package. 
 
 ## Downsides
 
-Many proposals involve trade-offs. What are they for this proposal and what are the downsides of this approach?
+This approach is quite oppinionated. It doesn't neccessarily live close to the web standards. It more tries to improve developer experience in enterprise contexts. 
 
 ## Alternatives
 
-What alternatives were considered and rejected? Why?
+An approach similar to Formik, where the model is defined in the template and the validation is a simple function (that's not part of the model) was considered, but was after an initial proof of concept abandoned due to complexities involving nesting of controls, grouping controls together or having a dynamic list of form controls. 
