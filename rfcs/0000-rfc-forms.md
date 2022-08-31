@@ -16,16 +16,19 @@ Provide an easy to use dev experience for validating forms with web components i
 - Provide a common API, so developers can quickly start using the @lit-labs/forms package without changing their existing controls. 
 - Allow cross field validation
 - Allow async validation
-- get and set dirty, touched, valid states for individual controls
-- allow for configuration (e. g. change on `blur` or `change`)
-- It should be typed
+- Get and change state for individual controls
+- Allow for configuration (e. g. when should changes be reflected in the model (when the element looses focus vs when the value of the element changes.))
+- The API should be type safe. 
 - It should be possible to set initial values for individual controls. 
-- subscribe to value changes and update dependant controls accordinly. 
-- validate all controls of a form at the same time. 
+- Subscribe to value changes of a control
+- Subscribe to state changes of a control.
+- Update the value of a control. 
+- Organize controls into groups
+- Validate or update groups 
 - Allow for dynamic forms (e. g. arrays of controls etc.)
 
 ### Non-Goals
-- The goal is not to provide a set of Validators 
+- The goal is not to provide a set of Validators. Validators should just be pure functions. They can be shared across projects, but it is not a goal to provide a library of common validators with this project.  
 
 ## Motivation
 
@@ -68,7 +71,7 @@ This validator runs on a form group and gets passed all values of the children a
 #### Defining the model 
 The model for a form can be created similar to Angular Reactive Forms through a `FormBuilder` class. Every control must be initialized with an initial value. The following example is taken from @UserGalilelo's prototype:
 
-````js
+```js
 fb = new FormBuilder(this);
 
 form = this.fb.group({
@@ -93,7 +96,7 @@ render() {
     <input type="text" ${bind('consent')}>
   `
 }
-````
+```
 
 The model and the elements are connected by use of a directive. There is an additional directive which simplifies rendering a form array, similar to `repeat` which takes an instance of form array as a parameter and as a second parameter takes a render function, which the directive uses to render an individual item of the form array. 
 
