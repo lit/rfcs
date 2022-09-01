@@ -25,7 +25,8 @@ Provide an easy to use dev experience for validating forms with web components i
 - Update the value of a control. 
 - Organize controls into groups
 - Validate or update groups 
-- Allow for dynamic forms (e. g. arrays of controls etc.)
+- Form states should be serializable and can be used to update a form.
+- Allow for dynamic forms (e. g. arrays of controls or multi step wizards etc.)
 
 ### Non-Goals
 - The goal is not to provide a set of Validators. Validators should just be pure functions. They can be shared across projects, but it is not a goal to provide a library of common validators with this project.  
