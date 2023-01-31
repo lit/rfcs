@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: {{ rictic }}
-PR: {{ update_with_pr_number }}
+PR: {{ 15 }}
 ---
 
 # Hot Elements
