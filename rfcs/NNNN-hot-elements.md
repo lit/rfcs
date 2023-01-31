@@ -1,7 +1,7 @@
 ---
 Status: Active
-Champions: {{ rictic }}
-PR: {{ 15 }}
+Champions: rictic
+PR: [15](https://github.com/lit/rfcs/pull/15)
 ---
 
 # Hot Elements
@@ -15,6 +15,7 @@ A new Lit Labs package for supporting hot module replacement with custom element
 - Provide an API for custom element classes so that they can add additional handling of HMR. For example, in LitElement we can patch and rerender existing elements in the page.
   - This API should be implementable by a base class, so that in many cases no changes are needed to an element for it to achieve optimal HMR.
 - Support @web/dev-server-hmr specifically and the [esm-hmr](https://github.com/FredKSchott/esm-hmr) protocol more generally.
+- In a LitElement that accepts HMRs, editing a template or style and saving should result in the page updating by doing the minimum amount of work needed.
 
 ### Non-Goals
 - Support all HMR servers and protocols, at least initially.
@@ -50,7 +51,7 @@ If we change the HMR element protocol in a non-backwards compatible way, we shou
 
 ### Testing Plan
 
-To test this properly, we will need integration tests with a real web dev server, using a browser-controlling system like Playwright. The initial PR may not have tests.
+To test this properly, we will need integration tests with a real web dev server, using a browser-controlling system like Playwright.
 
 ### Performance and Code Size Impact
 
