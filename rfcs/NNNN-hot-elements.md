@@ -16,6 +16,9 @@ A new Lit Labs package for supporting hot module replacement with custom element
   - This API should be implementable by a base class, so that in many cases no changes are needed to an element for it to achieve optimal HMR.
 - Support @web/dev-server-hmr specifically and the [esm-hmr](https://github.com/FredKSchott/esm-hmr) protocol more generally.
 - In a LitElement that accepts HMRs, editing a template or style and saving should result in the page updating by doing the minimum amount of work needed.
+  - State on HMR'd elements and the DOM should be preserved as much as possible,
+    though native `#private` fields will likely not be preservable, nor
+    state stored on module-local variables, etc.
 
 ### Non-Goals
 - Support all HMR servers and protocols, at least initially.
