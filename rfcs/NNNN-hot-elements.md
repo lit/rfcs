@@ -34,6 +34,8 @@ On top of that, we're adding a lightweight protocol for custom element classes t
 static notifyOnHotReplace(tagname: string, updatedClass: typeof this): void;
 ```
 
+This is most of the information available to our patched custom element renderer, but fortunately it's all that's needed for a LitElement subclass to patch itself, update styles, then find all existing instances in the page and ask them to rerender.
+
 ## Implementation Considerations
 
 ### Implementation Plan
