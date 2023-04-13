@@ -40,6 +40,11 @@ We need to start the habit of regularly removing previously deprecated APIs to k
 
 ## Detailed Design
 
+### 2.x deprecations
+
+* `UpdatingElement` is not currently deprecated and needs to be.
+* All other moved APIs are deprecated.
+
 ### IE11 removal
 
 - Turn down our IE test runners
@@ -50,6 +55,7 @@ We need to start the habit of regularly removing previously deprecated APIs to k
 - Use `toggleAttribute()` ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/lit-html/src/lit-html.ts#L1893))
 - Use `Element.prototype.after()`, `.before()`, `.replaceChildren()` where beneficial
 - Remove test conditional on IE11 (and Chrome 41) ([example](https://github.com/lit/lit/blob/main/packages/lit-html/src/test/directives/style-map_test.ts#L14))
+- Use `for..of` loops instead of `forEach()`.
 
 ### Publish ES2021
 
