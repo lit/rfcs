@@ -47,13 +47,15 @@ We need to start the habit of regularly removing previously deprecated APIs to k
 - Simplify bound attribute handling ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/lit-html/src/lit-html.ts#L911))
 - Simplify `styleMap()` style removal ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/lit-html/src/directives/style-map.ts#L82))
 - Use `globalThis` ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/lit-html/src/lit-html.ts#L15))
-- Use `toggleAttribute()` ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/reactive-element/src/reactive-element.ts#L1126))
+- Use `toggleAttribute()` ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/lit-html/src/lit-html.ts#L1893))
 - Use `Element.prototype.after()`, `.before()`, `.replaceChildren()` where beneficial
+- Remove test conditional on IE11 (and Chrome 41) ([example](https://github.com/lit/lit/blob/main/packages/lit-html/src/test/directives/style-map_test.ts#L14))
 
 ### Publish ES2021
 
 - Update tsconfig target and lib to es2022
 - Remove unused catch bindings ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/reactive-element/src/reactive-element.ts#L351))
+- Verify code size against regressions
 
 ### Misc / Old API removal
 - Remove `UpdatingElement` export from lit-element.ts ([source](https://github.com/lit/lit/blob/f2eb97962c7e77373b3b8861ab59639de22da3d0/packages/lit-element/src/lit-element.ts#L84))
@@ -69,15 +71,15 @@ We need to start the habit of regularly removing previously deprecated APIs to k
 
 #### Branches
 
-If we keep the breaking changes to this version to only dropping IE11 support and publishing ES2020 we may be able to land the changes on `main` in quick succession with no special release branches.
-
-This may make importing into Google harder though - say if we batch the IE11 changes into one PR and that breaks internal Google tests. So we may want to make a `2.x` branch and commit PRs to `main` more incrementally.
+As recommended by [changesets prereleases documentation](https://github.com/changesets/changesets/blob/main/docs/prereleases.md) we will work on a separate `3.0` branch, and regularly merge `main` into it. When 3.0 is ready, we will create a `2.x` branch, then merge `3.0` into `main`.
 
 ### Backward Compatibility
 
 There should be no required _code_ changes for users of non-deprecated* APIs.
 
-\* If we have deprecated everything properly. For the `UpdatingElement` export at least, we did miss deprecating it.
+There are potential interop considerations between versions of Lit, though only when sharing objects between version, like a directive from one version and a template from another. We should be ok because of the work we did to eliminate `instanceof` checks and ensure stable APIs on implementation objects that could be shared between versions.
+
+\* _If we have deprecated everything properly. For the `UpdatingElement` export at least, we did miss deprecating it._
 
 ### Testing Plan
 
@@ -89,16 +91,21 @@ This should have a very small positive impact on code size and perf due to using
 
 ### Interoperability
 
-N/A
+Since there are no new features, there is no impact on web component ecosystem interoperability.
 
 ### Security Impact
 
-N/A
+No changes
 
 ### Documentation Plan
 
+* Prerelease blog post
 * Blog post
-* Update version selector on lit.dev. Since this changes to outward API, v2 and v3 can share the same option.
+* Add version selector for v3 docs
+* Update tooling and workflow docs
+  * Clarify and simplify the support policy.
+  * Describe exactly which versions are supported (tested) in a table
+  * Remove reverences to IE
 * Update API docs. The only removals would be `UpdatingElement` and the decorators, etc., exports from `lit-element.js`. Instead of an entirely new set of API docs, maybe we can somehow preserve and mark those as removed.
 
 ## Downsides
