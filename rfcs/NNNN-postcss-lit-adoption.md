@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: @43081j
-PR:
+PR: #17
 ---
 
 # Official postcss/tailwind support
@@ -39,15 +39,15 @@ any breaking changes elsewhere in the monorepo.
 
 ## Detailed Design
 
-We should be able to migrate the repository to `packages/postcss-lit`, similar
-to what we will eventually do with `eslint-plugin-lit`.
+A new `packages/postcss-lit` directory can be created in the monorepo which
+is initially an exact copy of the existing `postcss-lit` package.
 
-Alternatively, both could live in the `labs/` project although that may not
-make sense since they are both stable projects.
+Once the sources have been copied across, we can continue publishing the package
+under the existing `postcss-lit` name for backwards compatibility.
 
-It is likely we want to maintain the same `postcss-lit` name just to avoid
-breaking existing setups and to remain consistent with postcss' other custom
-syntaxes.
+After the move has been made, it may also make sense to migrate some of the CI
+workflows to be more closely aligned to those of the other monorepo packages
+(e.g. same node versions, etc).
 
 ## Implementation Considerations
 
