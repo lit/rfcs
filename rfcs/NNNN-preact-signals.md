@@ -139,7 +139,7 @@ class WatchSignal extends AsyncDirective {
 export const watch = directive(WatchSignal);
 ```
 
-### auto-watching template tag
+### Auto-watching template tag
 
 Auto-watching versions of `html` and `svg` template tags will scan a template result's values and automatically wrap them in a `watch()` directive if they are signals.
 
@@ -149,11 +149,11 @@ We should be able to detect signals with `value instanceof Signal`. Which the `i
 
 ### Implementation Plan
 
-TBD
+Implementation should be straight forward. We'll create a new `@lit/labs/preact-signals` package with the three APIs proposed here. There is nothing needed in core to support this.
 
 ### Backward Compatibility
 
-N/A
+No backward compatibility concerns.
 
 ### Testing Plan
 
@@ -169,11 +169,11 @@ Signals implementations are unfortunately not interoperable with each other. Sig
 
 ### Security Impact
 
-N/A
+None
 
 ### Documentation Plan
 
-This package will initially be documented in it's own README. If it stays on track to graduation, we should document this package under the *Managing Data* section on lit.dev. We may end up with multiple signals packages, and either none will graduate, one will, or we'll have to document multiple packages.
+This package will initially be documented in its own README. If it stays on track to graduation, we should document this package under the *Managing Data* section on lit.dev. We may end up with multiple signals packages, and either none will graduate, one will, or we'll have to document multiple packages.
 
 ## Downsides
 
