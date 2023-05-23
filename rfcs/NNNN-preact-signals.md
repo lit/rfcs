@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: @justinfagnani @rictic
-PR: {{ update_with_pr_number }}
+PR: https://github.com/lit/rfcs/pull/19
 ---
 
 # Preact Signals
