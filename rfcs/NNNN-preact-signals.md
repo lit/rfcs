@@ -136,7 +136,7 @@ class WatchSignal extends AsyncDirective {
     return signal.value;
   }
 }
-export const resolvePromise = directive(ResolvePromise);
+export const watch = directive(WatchSignal);
 ```
 
 ### auto-watching template tag
