@@ -16,7 +16,7 @@ Allow us to make a few breaking changes that will let us reduce some engineering
 - Require no code changes from developers using non-deprecated Lit 2.0 APIs
 - Drop IE support
 - Publish ES2021
-- Small cleanups (remove Lit pre-2.0 compatibility workarounds)
+- Remove APIs deprecated in Lit 2.0
 
 ### Non-Goals
 - Drop support for the Shady DOM polyfill
