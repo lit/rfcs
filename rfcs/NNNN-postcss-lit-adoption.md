@@ -45,9 +45,13 @@ is initially an exact copy of the existing `postcss-lit` package.
 Once the sources have been copied across, we can continue publishing the package
 under the existing `postcss-lit` name for backwards compatibility.
 
-After the move has been made, it may also make sense to migrate some of the CI
-workflows to be more closely aligned to those of the other monorepo packages
-(e.g. same node versions, etc).
+After the move has been made, we should also do the following:
+
+- Migrate the CI workflow to be better aligned with other pipelines in the
+monorepo
+- Add a new `examples/` directory with full examples of how and when to use
+`postcss-lit`
+  - In particular, we should include a tailwind example, and a basic example
 
 ## Implementation Considerations
 
@@ -85,6 +89,10 @@ CSS:
 - External CSS via rollup plugins (using CSS imports)
 
 These could be linked in the Lit website.
+
+In addition to these articles, we should publish some working examples (as
+mentioned earlier) in the repo itself. Particularly tailwind, a basic setup,
+and possibly an example of using postcss transforms.
 
 ## Downsides
 
