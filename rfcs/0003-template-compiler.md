@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: @AndrewJakubowicz
-PR: {{ update_with_pr_number }}
+PR: https://github.com/lit/rfcs/pull/21
 ---
 
 # @lit-labs/compiler
@@ -26,8 +26,6 @@ Provide an optional build time performance improvement for the first render of a
 - Other template transformations. This is only for performance.
 
 ## Motivation
-
-Why is the RFC neccessary? What background information is needed to understand why?
 
 `lit-html` has [three internal rendering phases](https://github.com/lit/lit/blob/main/dev-docs/design/how-lit-html-works.md#summary-of-lit-html-rendering-phases) which are all optimized to cache and reuse previous work done. However, the very first `render()` must still execute all three phases.
 
