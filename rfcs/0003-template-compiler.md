@@ -20,7 +20,7 @@ Provide an optional build time performance improvement for the first render of a
 - Provide a TypeScript transformer that can be used with a rollup plugin such as [@rollup/plugin-typescript](https://www.npmjs.com/package/@rollup/plugin-typescript).
 - Compiler can be run on JavaScript and TypeScript files.
 
-### Non-Goals (TODO)
+### Non-Goals
 
 - The compiled template does not have to be syntactically identical to a runtime prepared template, only semantically identical.
 - Other template transformations. This is only for performance.
@@ -53,8 +53,18 @@ const hi = (name) => ({ _$litType$: lit_template_1, values: [name] });
 
 ### Transformer Design
 
-TODO
+The transformer should be completely syntactic. Initially only compiling any `html` template expressions if `html` was imported from `lit` or `lit-html` directly.
 
+Each individual `TemplateResult` is split into two declarations, a `CompiledTemplate` and `CompiledTemplateResult`. The `CompiledTemplate` is hoisted to the module scope, and contains the prepared HTML and template parts for the original `TemplateResult`. The `CompiledTemplateResult` replaces the `TemplateResult` and binds the static `CompiledTemplate` with the dynamic `values` array.
+
+If a part is used that requires a constructor, the compiler
+will also insert an import such as:
+
+```js
+// ...
+import { _$LH as litHtmlPrivate_1 } from "lit-html/private-ssr-support.js";
+const { AttributePart: _$LH_AttributePart, PropertyPart: _$LH_PropertyPart, BooleanAttributePart: _$LH_BooleanAttributePart, EventPart: _$LH_EventPart } = litHtmlPrivate_1;
+```
 
 ## Implementation Considerations
 
@@ -111,12 +121,8 @@ This package will initially be documented in its own README. If it stays on trac
 
 ## Downsides
 
-Many proposals involve trade-offs. What are they for this proposal and what are the downsides of this approach?
-
-TODO
+The downside of this approach is that it requires the code to have a build step which can add complexity and build specific setups. There are also slight mismatches in the precompiled prepared html, such as lit markers not required in comment nodes to reduce file size.
 
 ## Alternatives
 
-What alternatives were considered and rejected? Why?
-
-TODO
+No alternatives were considered and rejected.
