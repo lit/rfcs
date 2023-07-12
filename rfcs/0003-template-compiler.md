@@ -22,14 +22,14 @@ Provide an optional build time performance improvement for the first render of a
 
 ### Non-Goals
 
-- The compiled template does not have to be syntactically identical to a runtime prepared template, only semantically identical.
+- The compiled template does not have to be syntactically identical to the html prepared at runtime, only semantically identical.
 - Other template transformations. This is only for performance.
 
 ## Motivation
 
-`lit-html` has [three internal rendering phases](https://github.com/lit/lit/blob/main/dev-docs/design/how-lit-html-works.md#summary-of-lit-html-rendering-phases) which are all optimized to cache and reuse previous work done. However, the very first `render()` must still execute all three phases.
+`lit-html` has [three internal rendering phases](https://github.com/lit/lit/blob/main/dev-docs/design/how-lit-html-works.md#summary-of-lit-html-rendering-phases) which are all optimized to cache and reuse previous work. However, the very first `render()` must still execute all three phases.
 
-The @lit-labs/compiler will provide a way to opt into precompiling the templates, moving one of the internal rendering phases to build time.
+The @lit-labs/compiler will provide a way to opt into precompiling the templates, moving the first internal rendering phase to build time.
 
 By precompiling `html` tagged template literals, the runtime only needs to execute two internal rendering phases reducing the first render performance. As a nice benefit, any subsequent updates that encounter a new compiled `html` tagged template literal will also benefit from the performance improvement and can skip the prepare phase.
 
@@ -49,7 +49,7 @@ const lit_template_1 = { h: compiled_html`<h1>Hello <?></h1>`, parts: [{ type: 2
 const hi = (name) => ({ _$litType$: lit_template_1, values: [name] });
 ```
 
-`lit-html` version 2.7.5 and up already support a `CompiledTemplateResult` type. This transform converts the `` html`<h1>Hello ${name}!</h1>` `` `TemplateResult` into a `CompiledTemplateResult` which semantically behaves the same but with greater initial render performance. The update performance is unchanged.
+This transform converts the `` html`<h1>Hello ${name}!</h1>` `` `TemplateResult` into a `CompiledTemplateResult` which semantically behaves the same but with greater initial render performance. The update performance is unchanged.
 
 ### Transformer Design
 
@@ -74,15 +74,13 @@ Create a new `@lit-labs/compiler` package which exports a Typescript transformer
 
 ### Backward Compatibility
 
-Compiled templates require the version of lit-html to be greater than 2.7.5.
+lit-html supports compiled templates on and above version 2.7.5.
 
 ### Testing Plan
 
 Unit tests are sufficient for testing that the transform is applied correctly. An additional test target `test:dev:compiled` will be added to lit-html to compile the test suite using the transformer ensuring that most lit-html tests behave the same with a `CompiledTemplate`.
 
 > Note: Some lit-html tests need to be skipped, for example dev mode warnings that will no longer execute if the template has been compiled.
-
-How will this proposal be tested? Are unit tests sufficient, or do we need integration tests? Is any unique testing infrastructure required?
 
 ### Performance and Code Size Impact
 
@@ -113,7 +111,7 @@ This labs package is not interoperable as it specifically optimizes Lit template
 
 ### Security Impact
 
-The prepared compiled template must be a tagged template literal to defend JSON injection attacks. Otherwise the `@lit-labs/compiler` package is only a transform and has no security impact.
+The prepared compiled template must be a tagged template literal to defend against JSON injection attacks. Otherwise the `@lit-labs/compiler` package is only a transform and has no security impact.
 
 ### Documentation Plan
 
@@ -121,7 +119,7 @@ This package will initially be documented in its own README. If it stays on trac
 
 ## Downsides
 
-The downside of this approach is that it requires the code to have a build step which can add complexity and build specific setups. There are also slight mismatches in the precompiled prepared html, such as lit markers not required in comment nodes to reduce file size.
+The downside of this approach is that it requires the code to have a build step which can add complexity and build specific setups. There are also slight mismatches in the precompiled prepared HTML, such as lit markers which are not required with pre-compilation.
 
 ## Alternatives
 
