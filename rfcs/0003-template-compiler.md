@@ -107,11 +107,11 @@ This RFC has been prototyped: https://github.com/lit/lit/pull/3984 to gather ben
 
 ### Interoperability
 
-This labs package is not interoperable as it specifically optimizes Lit template results using specific knowledge of the lit-html internal render phases.
+This labs package is interoperable as it can be safely run on any code, and will only optimize Lit templates.
 
 ### Security Impact
 
-The prepared compiled template must be a tagged template literal to defend against JSON injection attacks. Otherwise the `@lit-labs/compiler` package is only a transform and has no security impact.
+The prepared compiled template must be a tagged template literal to defend against JSON injection attacks. Otherwise the `@lit-labs/compiler` package is only a source code transform. Because a compiled template is processed in the same way that an uncompiled template is, we're just moving some of the work to build time. This should preserve the security invariants of the code being compiled.
 
 ### Documentation Plan
 
@@ -123,4 +123,5 @@ The downside of this approach is that it requires the code to have a build step 
 
 ## Alternatives
 
-No alternatives were considered and rejected.
+We could not release this package, as the package will have initial implementation cost, and ongoing maintenance cost. The performance wins are large enough that it seems worth it.
+We expect the code to need only occasional maintenance from TypeScript updates, as Lit's template result API is very stable.
