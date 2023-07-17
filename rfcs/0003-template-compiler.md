@@ -16,13 +16,14 @@ Provide an optional build time performance improvement for the first render of a
 ### Goals
 
 - Provide a build time transform that replaces lit `html` tagged template expressions with compiled templates.
-- Compiled and Uncompiled template results can be mixed and matched transparently.
-- Provide a TypeScript transformer that can be used with a rollup plugin such as [@rollup/plugin-typescript](https://www.npmjs.com/package/@rollup/plugin-typescript).
+- Compiled and uncompiled template results can be mixed and matched transparently, and should be semantically identical.
+- Provide a rollup plugin to compile templates.
 - Compiler can be run on JavaScript and TypeScript files.
+- Compilation preserves source-maps.
 
 ### Non-Goals
 
-- The compiled template does not have to be syntactically identical to the html prepared at runtime, only semantically identical.
+- The compiled template does not have to be syntactically identical to templates prepared at runtime. For example comment markers will not be the same as runtime preparation.
 - Other template transformations. This is only for performance.
 
 ## Motivation
@@ -66,11 +67,50 @@ import { _$LH as litHtmlPrivate_1 } from "lit-html/private-ssr-support.js";
 const { AttributePart: _$LH_AttributePart, PropertyPart: _$LH_PropertyPart, BooleanAttributePart: _$LH_BooleanAttributePart, EventPart: _$LH_EventPart } = litHtmlPrivate_1;
 ```
 
+### Rollup plugin
+
+The `@lit-labs/compiler` package will initially be usable as a rollup plugin that operates on JavaScript. An example usage looks like:
+
+```js
+// rollup.config.js (file truncated)
+import minifyHTML from 'rollup-plugin-minify-html-literals';
+import litTemplateCompiler from '@lit-labs/compiler';
+
+// ...
+  plugins: [
+    sourcemaps(),
+    // optional: TypeScript compilation
+    nodeResolve(),
+    minifyHTML(),
+    litTemplateCompiler(/** options **/), // <- @lit-labs/compiler plugin
+    terser()
+  ]
+// ...
+```
+
+The compiler plugin should be ordered after all other plugins that operate on
+`html` tags, (such as `minifyHTML` and `@lit/localize`), but before any manglers
+or source code minifiers. The placement is required because once the compiler transforms
+the templates into compiled templates, `minifyHTML` will no longer work – as it only minifies
+uncompiled templates. Source code minifiers such as `terser` may rename the `html` tag
+function preventing the locating of the templates to compile, so must come after.
+
+By operating on Javascript, this package should be less prone to breakages due to TypeScript version changes while still allowing the compiler to work in both JavaScript and TypeScript projects.
+
+The following options can be passed into `litTemplateCompiler`:
+
+| Option | Description  |
+|---|---|
+| `include` | Input file glob patterns, used to include files to compile. | 
+| `exclude` | File glob patterns to exclude from compilation. Take precedence over `include`. |
+| `htmlTagIdentifierMatcher` | Optional regex to match the tag function to locate a template to compile. Defaults to `html` |
+
+
 ## Implementation Considerations
 
 ### Implementation Plan
 
-Create a new `@lit-labs/compiler` package which exports a Typescript transformer.
+Create a new `@lit-labs/compiler` package which exports a rollup plugin. No major changes in Lit core are required.
 
 ### Backward Compatibility
 
@@ -119,7 +159,7 @@ This package will initially be documented in its own README. If it stays on trac
 
 ## Downsides
 
-The downside of this approach is that it requires the code to have a build step which can add complexity and build specific setups. There are also slight mismatches in the precompiled prepared HTML, such as lit markers which are not required with pre-compilation.
+The downside of this approach is that it requires the code to have a build step which can add complexity and build specific setups. There are also slight mismatches in the precompiled prepared HTML, such as lit markers which are not required with pre-compilation. The change in compiled comment markers broke one test in `lit_html` which was introspecting comment markers – something that should be uncommon in production use cases.
 
 ## Alternatives
 
