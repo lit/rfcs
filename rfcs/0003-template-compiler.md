@@ -74,16 +74,34 @@ const {
 } = litHtmlPrivate_1;
 ```
 
-This transformer will be exported from `@lit-labs/compiler`, and can be used anywhere TypeScript transformers are accepted, which depends on build setup.
+This transformer will be exported from `@lit-labs/compiler`, and can be used anywhere TypeScript transformers are accepted, which depends on build setup. Below is an example using [Rollup](https://rollupjs.org/) with [@rollup/plugin-typescript](https://www.npmjs.com/package/@rollup/plugin-typescript):
+
+```js
+// File: rollup.config.js
+import typescript from "@rollup/plugin-typescript";
+import { compileLitTemplates } from "@lit-labs/compiler";
+
+export default {
+  // ...
+  plugins: [
+    typescript({
+      transformers: {
+        before: [compileLitTemplates()],
+      },
+    }),
+    // other rollup plugins
+  ],
+};
+```
 
 ### Rollup plugin
 
-The `@lit-labs/compiler` package can be usable as a rollup plugin that operates on JavaScript. An example usage looks like:
+An additional `@lit-labs/compiler-rollup` package will be usable as a rollup plugin that operates on TypeScript and JavaScript. An example usage looks like:
 
 ```js
 // rollup.config.js (file truncated)
 import minifyHTML from "rollup-plugin-minify-html-literals";
-import litTemplateCompiler from "@lit-labs/compiler";
+import litTemplateCompiler from "@lit-labs/compiler-rollup";
 
 // ...
 plugins: [
@@ -91,7 +109,7 @@ plugins: [
   // optional: TypeScript compilation
   nodeResolve(),
   minifyHTML(),
-  litTemplateCompiler(/** options **/), // <- @lit-labs/compiler plugin
+  litTemplateCompiler(/** options **/), // <- @lit-labs/compiler-rollup plugin
   terser(),
 ];
 // ...
@@ -108,17 +126,16 @@ By operating on Javascript, this package should be less prone to breakages due t
 
 The following options can be passed into `litTemplateCompiler`:
 
-| Option                     | Description                                                                                  |
-| -------------------------- | -------------------------------------------------------------------------------------------- |
-| `include`                  | Input file glob patterns, used to include files to compile.                                  |
-| `exclude`                  | File glob patterns to exclude from compilation. Take precedence over `include`.              |
-| `htmlTagIdentifierMatcher` | Optional regex to match the tag function to locate a template to compile. Defaults to `html` |
+| Option    | Description                                                                     |
+| --------- | ------------------------------------------------------------------------------- |
+| `include` | Input file glob patterns, used to include files to compile.                     |
+| `exclude` | File glob patterns to exclude from compilation. Take precedence over `include`. |
 
 ## Implementation Considerations
 
 ### Implementation Plan
 
-Create a new `@lit-labs/compiler` package which exports a [TypeScript transformer](https://github.com/itsdouges/typescript-transformer-handbook#the-basics) and rollup plugin. No major changes in Lit core are required.
+Create a new `@lit-labs/compiler` package which exports a [TypeScript transformer](https://github.com/itsdouges/typescript-transformer-handbook#the-basics), and `@lit-labs/compiler-rollup` which vends a rollup plugin. No major changes in Lit core are required.
 
 ### Backward Compatibility
 
