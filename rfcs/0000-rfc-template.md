@@ -20,7 +20,7 @@ What is the RFC trying to accomplish?
 
 ## Motivation
 
-Why is the RFC neccessary? What background information is needed to understand why?
+Why is the RFC necessary? What background information is needed to understand why?
 
 ## Detailed Design
 
