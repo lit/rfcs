@@ -94,6 +94,19 @@ export default {
 };
 ```
 
+#### What templates will not be compiled
+
+The initial version of the compiler will not handle compilation of all templates. In the future, handling of all cases would allow us to completely remove the lit-html prepare phase from runtime.
+
+| Name                                 | Example                                       | Why                                                                                                                                                                                                                                                                           |
+| ------------------------------------ | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Re-exported `html` tag               | `import {html} from 'my-rexported-lit';`      | Any templates using this `html` tag will not be compiled, as it isn't imported from `lit` or `lit-html`.                                                                                                                                                                      |
+| `svg` tag                            | `` svg`<line />` ``                           | `svg` tags would require a change in the create phase of `lit-html`.                                                                                                                                                                                                          |
+| Invalid dynamic element name         | `` html `<${'A'}></${'A'}>` ``                | It's invalid.                                                                                                                                                                                                                                                                 |
+| Invalid octal literals               | `` html`\2` ``                                | It's invalid.                                                                                                                                                                                                                                                                 |
+| Raw text elements with inner binding | `<textarea>${'not ok'}</textarea>`            | Raw text elements (`script`, `style`, `textarea`, or `title`) with bindings get prepared at runtime by creating adjacent text nodes and markers. The `CompiledTemplate` prepared HTML cannot represent this so the `TemplateParts` nodeIndex cannot be correctly represented. |
+| `<template>` with internal binding   | `` html `<template>${'not ok'}</template>` `` | Expressions are not supported inside `<template>`. [See Invalid Locations docs](https://lit.dev/msg/expression-in-template).                                                                                                                                                  |
+
 ### Rollup plugin
 
 An additional `@lit-labs/compiler-rollup` package will be usable as a rollup plugin that operates on TypeScript and JavaScript. An example usage looks like:
