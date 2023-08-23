@@ -1,7 +1,7 @@
 ---
 Status: Active
-Champions: @AndrewJakubowicz
-PR: https://github.com/lit/rfcs/pull/21
+Champions: "@AndrewJakubowicz"
+PR: "https://github.com/lit/rfcs/pull/21"
 ---
 
 # @lit-labs/compiler
