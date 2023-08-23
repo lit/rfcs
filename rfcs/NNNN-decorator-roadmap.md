@@ -1,7 +1,7 @@
 ---
 Status: Active
-Champions: @justinfagnani
-PR: {{ update_with_pr_number }}
+Champions: "@justinfagnani"
+PR: https://github.com/lit/rfcs/pull/20
 ---
 
 # Decorator Roadmap
@@ -60,9 +60,9 @@ After all stages of the implementation plan are complete:
 
 ### Standard Decorators
 
-Standard decorators have a much different design than TypeScript's experimental decorators. Rather than getting access to the class and making dynamic, imperative changes to the class, standard decorators have no direct access to the class or the class member they're decorating and must instead return an object describing a replacement for the class member. For instance class accessor decorators return an object with get and set methods.
+Standard decorators have a much different design than TypeScript's experimental decorators. Rather than getting access to the class and making dynamic, imperative changes to the class, standard decorators have no direct access to the class or the class member they're decorating and must instead return an object describing a replacement for the class member. For instance, class accessor decorators return an object with get and set methods.
 
-This makes standard decorator usage must more static than experimental decorators. They can't add new class members, and can't change the type of member they decorate, and ReactiveElement's `static createProperty()` API is simply not callable.
+This makes standard decorator usage much more static than experimental decorators. They can't add new class members, and can't change the kind of member they decorate, and ReactiveElement's `static createProperty()` API is simply not callable.
 
 The good news is that our decorator implementations are likely to be smaller and simpler. For example, the two main functions of our `@property()` decorator are to replace a field with a getter/setter pair that calls `requestUpdate()` in the setter, and to store metadata about the field for use in attribute reflection.
 
@@ -98,6 +98,24 @@ class MyElement extends LitElement {
 }
 ```
 
+### Changes in behavior with standard decorators
+
+We intend to keep the new standard decorators implementations mostly compatible with the existing legacy decorators, but the new decorator standard does force us or allow us to make some breaking changes in behavior.
+
+#### `accessor` keyword is required
+
+As mention already, the `accessor` keyword will be required for all formerly field-decorators like `@property()`, `@query()`, etc.
+
+#### Initial values don't reflect for `@property()`
+
+The new decorator spec passes field and accessor initial values through a separate callback from `set()`. This allows us to know when we are receiving an initial value and not reflect it to an attribute. This is part of a [long-standing issue](https://github.com/lit/lit/issues/1476) where we would like to not create any attributes spontaneously on an element.
+
+#### Restoring default property values when attributes are removed
+
+We could also remember the initial property value in order to restore it when an associated attribute is removed.
+
+We will *not* do this, however, since there is a decent chance of harmful memory leaks from retaining initial values. We will instead investigate allowing a default value to be specified in property options. This will act as an opt-in for the behavior and retain only one object per class instead of per instance, at the cost of duplicating a default and initializer.
+
 ## Implementation Considerations
 
 ### Implementation Plan
@@ -115,31 +133,43 @@ This stage adds support for the new decorators standard in a backward-compatible
 * Add new module with standard decorators
     * Place them in a new module: `'lit/std-decorators.js'`
 * Re-export legacy decorators from `'lit/legacy-decorators.js'`
-* Add new module with a new implementation of _experimental_ decorators that work the same way standard decorators do:
+
+* Non-core packages with decorators (@lit/labs) must follow a similar plan
+    * We can skip the legacy-decorators step with more aggressive breaking changes for labs packages.
+* Update `static elementProperties` to read from `[Symbol.metadata]`
+    * Standard decorators cannot call into the `static createProperty()` API, so they must place property options into `[Symbol.metadata]`. We should use that as the source-of-truth going forward.
+
+
+#### II. Deprecate legacy decorators
+
+##### Requirements
+* Stage II has landed.
+* Preferred: At least one browser has shipped decorators
+* Deprecate legacy experimental decorators, `static createProperty()`, `static getPropertyDescriptor()`, etc. but _not_ `static properties`.
+    * Since there are no native implementations of decorators yet, we don't quite yet want to deprecate the main developer-facing API for property declaration.
+* Vend codemods to upgrade decorator usage:
+    * One to migrate to the new standard decorators
+    * One to migrate imports to the explicitly legacy decorators
+
+* (Optional, for google3) Add new module with a new implementation of _experimental_ decorators that work the same way standard decorators do:
     * A _third_ set of decorators: `'lit/experimental-decorators.js'`
     * They require `accessor`, replace the accessors on the prototype, do not call `static createProperty()`, store metadata in `[Symbol.metadata]`.
     * This is so that users stuck on the experimental decorators setting (ie, google3) have a path forward when we remove the infrastructure that supports them.
     * This decorator set will also be _use site_ compatible with standard decorators. Only the import will need to change to upgrade to standard decorators.
     * There is no great way to emulate the standard `addInitializer()`, so we keep our `static addInitializer()` un-deprecated.
-* Non-core packages with decorators (@lit/labs) must follow a similar plan
-    * We can skip the legacy-decorators step with more aggressive breaking changes for labs packages.
-* Deprecate legacy experimental decorators, `static createProperty()`, `static getPropertyDescriptor()`, etc. but _not_ `static properties`.
-    * Since there are no native implementations of decorators yet, we don't quite yet want to deprecate the main developer-facing API for property declaration.
-* Deprecate the `noAccessor` property option.
-* Update `static elementProperties` to read from `[Symbol.metadata]`
-    * Standard decorators cannot call into the `static createProperty()` API, so they must place property options into `[Symbol.metadata]`. We should use that as the source-of-truth going forward.
-* Vend codemods to upgrade decorator usage:
-    * One to migrate to the new standard decorators
-    * One to migrate to the new experimental decorators
+    * Add a codemode to migrate to the new experimental decorators
 
-#### II. Prefer standard decorators (breaking)
+##### Changes
+* Deprecate the `noAccessor` property option.
+
+#### III. Prefer standard decorators (breaking)
 
 This stage is still usable in non-decorator environments via `static properties`, but we move decorator modules around so that legacy use must use the non-default module names (`'lit/legacy-decorators.js'`) \
 
 ##### Requirements
 
-* Stage I has landed.
-* Preferred: At least one browser has shipped decorators
+* Stage II has landed.
+* At least one browser has shipped decorators
 
 ##### Changes
 
@@ -149,14 +179,14 @@ This stage is still usable in non-decorator environments via `static properties`
 * Deprecate <code>static addInitializer()</code>
 * Vend codemod to migrate standard decorator imports
 
-#### III. Remove legacy decorators (breaking)
+#### IV. Remove legacy decorators (breaking)
 
 This stage requires decorators for creating properties. It is no longer usable in non-decorator-supporting environments without transpilation.
 
 ##### Requirements
 
 * Native decorators are shipping in all major browsers.
-* Stage II has landed
+* Stage III has landed
 
 ##### Changes
 
@@ -167,14 +197,14 @@ This stage requires decorators for creating properties. It is no longer usable i
     * Other decorators are more optional and remain in their own modules.
 
 
-#### IV. Cleanup (breaking)
+#### V. Cleanup (breaking)
 
 When all developers can use the standard decorators API we can remove the experimental decorators fully.
 
 ##### Requirements
 
+* Stage IV has landed
 * Native decorators are shipping in all major browsers.
-* Stage II has landed
 
 ##### Changes
 
