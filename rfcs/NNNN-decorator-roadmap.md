@@ -13,6 +13,7 @@ This RFC describes how Lit can migrate to standard decorators with the smoothest
 Migrate to using standard decorators as the only decorator implementation and unify Lit's syntax around decorators as the only way to declare reactive properties. When the migration is complete, Lit will require a decorator-supporting environment or toolchain.
 
 ### Goals
+
 - Make Lit decorators work without transpilation
 - Make the migration as easy as possible on developers
 - Have a single implementation for decorators
@@ -22,6 +23,7 @@ Migrate to using standard decorators as the only decorator implementation and un
 - Decrease code size with simpler decorator implementations
 
 ### Non-Goals
+
 - Change our decorators API drastically (ie, split `@property()` into `@input()`, `@output()`, `@attribute`, etc)
 
 ## Motivation
@@ -33,9 +35,10 @@ Standard decorators will allow us to unify our surface syntax which is currently
 ## Detailed Design
 
 Detailed design of the new decorators should be covered in another RFC. This RFC focuses on:
-* That standard decorators become the only way to declare reactive properties
-* That breaking changes are made to remove support for dynamically adding reactive properties, since that will not be used by the new decorators
-* A multi-stage plan for making the changes so that developers can incrementally migrate
+
+- That standard decorators become the only way to declare reactive properties
+- That breaking changes are made to remove support for dynamically adding reactive properties, since that will not be used by the new decorators
+- A multi-stage plan for making the changes so that developers can incrementally migrate
 
 ### Audiences
 
@@ -75,7 +78,7 @@ export const property =
     _target: ClassAccessorDecoratorTarget<C, V>,
     context: ClassAccessorDecoratorContext<C, V>
   ): ClassAccessorDecoratorResult<C, V> => {
-    const {access, name} = context;
+    const { access, name } = context;
     return {
       get(this: C) {
         return access.get(this);
@@ -114,7 +117,7 @@ The new decorator spec passes field and accessor initial values through a separa
 
 We could also remember the initial property value in order to restore it when an associated attribute is removed.
 
-We will *not* do this, however, since there is a decent chance of harmful memory leaks from retaining initial values. We will instead investigate allowing a default value to be specified in property options. This will act as an opt-in for the behavior and retain only one object per class instead of per instance, at the cost of duplicating a default and initializer.
+We will _not_ do this, however, since there is a decent chance of harmful memory leaks from retaining initial values. We will instead investigate allowing a default value to be specified in property options. This will act as an opt-in for the behavior and retain only one object per class instead of per instance, at the cost of duplicating a default and initializer.
 
 ## Implementation Considerations
 
@@ -127,57 +130,60 @@ The plan is divided into stages which must be shipped as releases.
 This stage adds support for the new decorators standard in a backward-compatible way for both TypeScript and JavaScript developers.
 
 ##### Requirements
-* TypeScript ships decorator metadata
+
+- TypeScript ships decorator metadata (TypeScript 5.2, scheduled for 2023-08-22)
 
 ##### Changes
-* Add new module with standard decorators
-    * Place them in a new module: `'lit/std-decorators.js'`
-* Re-export legacy decorators from `'lit/legacy-decorators.js'`
 
-* Non-core packages with decorators (@lit/labs) must follow a similar plan
-    * We can skip the legacy-decorators step with more aggressive breaking changes for labs packages.
-* Update `static elementProperties` to read from `[Symbol.metadata]`
-    * Standard decorators cannot call into the `static createProperty()` API, so they must place property options into `[Symbol.metadata]`. We should use that as the source-of-truth going forward.
-
+- Add new module with standard decorators
+  - Place them in a new module: `'lit/std-decorators.js'`
+- Re-export legacy decorators from `'lit/legacy-decorators.js'`
+- Non-core packages with decorators (@lit/labs) must follow a similar plan
+- Update `static elementProperties` to read from `[Symbol.metadata]`
+  - Standard decorators cannot call into the `static createProperty()` API, so they must place property options into `[Symbol.metadata]`. We should use that as the source-of-truth going forward.
 
 #### II. Deprecate legacy decorators
 
 ##### Requirements
-* Stage II has landed.
-* Preferred: At least one browser has shipped decorators
-* Deprecate legacy experimental decorators, `static createProperty()`, `static getPropertyDescriptor()`, etc. but _not_ `static properties`.
-    * Since there are no native implementations of decorators yet, we don't quite yet want to deprecate the main developer-facing API for property declaration.
-* Vend codemods to upgrade decorator usage:
-    * One to migrate to the new standard decorators
-    * One to migrate imports to the explicitly legacy decorators
 
-* (Optional, for google3) Add new module with a new implementation of _experimental_ decorators that work the same way standard decorators do:
-    * A _third_ set of decorators: `'lit/experimental-decorators.js'`
-    * They require `accessor`, replace the accessors on the prototype, do not call `static createProperty()`, store metadata in `[Symbol.metadata]`.
-    * This is so that users stuck on the experimental decorators setting (ie, google3) have a path forward when we remove the infrastructure that supports them.
-    * This decorator set will also be _use site_ compatible with standard decorators. Only the import will need to change to upgrade to standard decorators.
-    * There is no great way to emulate the standard `addInitializer()`, so we keep our `static addInitializer()` un-deprecated.
-    * Add a codemode to migrate to the new experimental decorators
+- Stage II has landed.
+- Preferred: At least one browser has shipped decorators
+- Deprecate legacy experimental decorators, `static createProperty()`, `static getPropertyDescriptor()`, etc. but _not_ `static properties`.
+  - Since there are no native implementations of decorators yet, we don't quite yet want to deprecate the main developer-facing API for property declaration.
+- Vend codemods to upgrade decorator usage:
+
+  - One to migrate to the new standard decorators
+  - One to migrate imports to the explicitly legacy decorators
+
+- (Optional, for google3) Add new module with a new implementation of _experimental_ decorators that work the same way standard decorators do:
+  - A _third_ set of decorators: `'lit/experimental-decorators.js'`
+  - They require `accessor`, replace the accessors on the prototype, do not call `static createProperty()`, store metadata in `[Symbol.metadata]`.
+  - This is so that users stuck on the experimental decorators setting (ie, google3) have a path forward when we remove the infrastructure that supports them.
+  - It's also useful for larger projects that want to incrementally migrate to the new decorators without multiple tsconfigs with per-file carve outs as they migrate.
+  - This decorator set will also be _use site_ compatible with standard decorators. Only the import will need to change to upgrade to standard decorators.
+  - There is no great way to emulate the standard `addInitializer()`, so we keep our `static addInitializer()` un-deprecated.
+  - Add a codemode to migrate to the new experimental decorators
 
 ##### Changes
-* Deprecate the `noAccessor` property option.
+
+- Deprecate the `noAccessor` property option.
 
 #### III. Prefer standard decorators (breaking)
 
-This stage is still usable in non-decorator environments via `static properties`, but we move decorator modules around so that legacy use must use the non-default module names (`'lit/legacy-decorators.js'`) \
+This stage is still usable in non-decorator environments via `static properties`, but we move decorator modules around so that legacy use must use the non-default module names (`'lit/legacy-decorators.js'`).
 
 ##### Requirements
 
-* Stage II has landed.
-* At least one browser has shipped decorators
+- Stage II has landed.
+- At least one browser has shipped decorators
 
 ##### Changes
 
-* Move standard decorators implementation to <code>'lit/decorators.js'</code>
-* Re-export standard decorators from <code>'lit/std-decorators.js'</code>
-* Deprecate <code>static properties</code>
-* Deprecate <code>static addInitializer()</code>
-* Vend codemod to migrate standard decorator imports
+- Move standard decorators implementation to <code>'lit/decorators.js'</code>
+- Re-export standard decorators from <code>'lit/std-decorators.js'</code>
+- Deprecate <code>static properties</code>
+- Deprecate <code>static addInitializer()</code>
+- Vend codemod to migrate standard decorator imports
 
 #### IV. Remove legacy decorators (breaking)
 
@@ -185,17 +191,16 @@ This stage requires decorators for creating properties. It is no longer usable i
 
 ##### Requirements
 
-* Native decorators are shipping in all major browsers.
-* Stage III has landed
+- Native decorators are shipping in all major browsers.
+- Stage III has landed
 
 ##### Changes
 
-* Remove previously deprecated APIs
-* Deprecate `'lit/std-decorators.js'` module
-* Re-export `@customElement()`, `@property()` and `@state()` from the main reactive-element, lit-element, and lit modules.
-    * This increases the core module size, which is paid for by removing the deprecated APIs.
-    * Other decorators are more optional and remain in their own modules.
-
+- Remove previously deprecated APIs
+- Deprecate `'lit/std-decorators.js'` module
+- Re-export `@customElement()`, `@property()` and `@state()` from the main reactive-element, lit-element, and lit modules.
+  - This increases the core module size, which is paid for by removing the deprecated APIs.
+  - Other decorators are more optional and remain in their own modules.
 
 #### V. Cleanup (breaking)
 
@@ -203,14 +208,14 @@ When all developers can use the standard decorators API we can remove the experi
 
 ##### Requirements
 
-* Stage IV has landed
-* Native decorators are shipping in all major browsers.
+- Stage IV has landed
+- Native decorators are shipping in all major browsers.
 
 ##### Changes
 
-* Remove <code>'lit/std-decorators.js'</code>
-* Remove <code>'lit/experimental-decorators.js'</code>
-* Vend codemod to move experimental decorator imports to standard decorators
+- Remove <code>'lit/std-decorators.js'</code>
+- Remove <code>'lit/experimental-decorators.js'</code>
+- Vend codemod to move experimental decorator imports to standard decorators
 
 ### Backward Compatibility
 
