@@ -1,5 +1,5 @@
 ---
-Status: Active
+Status: Accepted
 Champions: "@AndrewJakubowicz"
 PR: "https://github.com/lit/rfcs/pull/21"
 ---
