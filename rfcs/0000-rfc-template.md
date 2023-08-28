@@ -1,7 +1,7 @@
 ---
 Status: Active
-Champions: {{ your_github_username }}
-PR: {{ update_with_pr_number }}
+Champions: "{{ your_github_username }}"
+PR: "{{ update_with_pr_link }}"
 ---
 
 # {{ TITLE }}

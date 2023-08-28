@@ -1,6 +1,6 @@
 ---
 Status: Accepted
-Champions: @justinfagnani
+Champions: "@justinfagnani"
 PR:
 ---
 
