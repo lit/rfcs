@@ -224,13 +224,13 @@ This stage requires decorators for creating properties. It is no longer usable i
   - This increases the core module size, which is paid for by removing the deprecated APIs.
   - Other decorators are more optional and remain in their own modules.
 
-#### V. Cleanup (breaking)
+#### IV. Cleanup (breaking)
 
 When all developers can use the standard decorators API we can remove the experimental decorators fully as well as `static properties`.
 
 ##### Requirements
 
-- Stage IV has landed
+- Stage III has landed
 - Native decorators are shipping in all major browsers.
 
 ##### Changes
