@@ -185,11 +185,12 @@ and ensures experimental decorators are semantically identical to standard decor
 ##### Requirements
 
 - TypeScript ships decorator metadata (TypeScript 5.2, scheduled for 2023-08-22)
+- Babel ships decorator proposal plugin with metadata support (Babel 7.23.0, 2023-09-25)
 
 ##### Changes
 
 - Make Lit decorators "hybrid", working in either experimental or standard environments.
-- Non-core packages with decorators (@lit/labs) must follow a similar plan
+- Non-core packages with decorators (`@lit/localize`, `@lit-labs/context`) must follow a similar plan
 - Update `static elementProperties` to read from `[Symbol.metadata]`
   - Standard decorators cannot call into the `static createProperty()` API, so they must place property options into `[Symbol.metadata]`. We should use that as the source-of-truth going forward.
 
