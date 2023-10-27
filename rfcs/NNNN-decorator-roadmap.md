@@ -30,11 +30,11 @@ Migrate to using standard decorators as the only decorator implementation and un
 
 As [standard decorators](https://github.com/tc39/proposal-decorators) are starting to ship in [compilers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#decorators) and soon in VMs, we need to prepare for migrating Lit to use them.
 
-Standard decorators will allow us to unify our surface syntax which is currently different in plain JS and compiled sources using TypeScript or Babel. This will let us use decorators as the one way of declaring reactive properties, instead of also offering the `static properties` feature. Removing `static properties` in turn lets us remove the infrastructure for dynamically creating reactive properties, simplifying ReactiveElement.
+Standard decorators will allow us to unify our surface syntax which is currently different in plain JS and compiled sources using TypeScript or Babel. This will let us eventually use decorators as the one way of declaring reactive properties, instead of also offering the `static properties` feature. Removing `static properties` in turn lets us remove the infrastructure for dynamically creating reactive properties, simplifying ReactiveElement.
 
 ## Detailed Design
 
-Detailed design of the new decorators should be covered in another RFC. This RFC focuses on:
+Detailed design of the new decorators should be covered in pull requests and reviews, given that they follow the constraints in this RFC. This RFC focuses on:
 
 - That standard decorators become the only way to declare reactive properties
 - That breaking changes are made to remove support for dynamically adding reactive properties, since that will not be used by the new decorators
@@ -101,7 +101,7 @@ class MyElement extends LitElement {
 }
 ```
 
-### Changes in behavior possible with standard decorators
+### Potential and required changes in behavior with standard decorators
 
 We intend to keep the new standard decorators implementations mostly compatible with the existing legacy decorators, but the new decorator standard does force us or allow us to make some breaking changes in behavior.
 
@@ -113,7 +113,7 @@ As mention already, the `accessor` keyword will be required for all formerly fie
 
 The new decorator spec passes field and accessor initial values through a separate callback from `set()`. This allows us to know when we are receiving an initial value and not reflect it to an attribute. This is part of a [long-standing issue](https://github.com/lit/lit/issues/1476) where we would like to not create any attributes spontaneously on an element.
 
-We will _not_ do this, as it will make migrating more challenging.
+We will _not_ do this initially, as it will make migrating more challenging. We will instead open another RFC on how to opt out of initial value reflection for both experimental and standard decorators.
 
 #### Restoring default property values when attributes are removed
 
