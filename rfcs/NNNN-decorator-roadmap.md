@@ -44,10 +44,10 @@ Detailed design of the new decorators should be covered in another RFC. This RFC
 
 If we group our developers by how they relate to decorators, we have four distinct audiences:
 
-- JavaScript developers not yet using decorators
-- TypeScript developers using legacy experimental decorators
-- TypeScript developers not yet using decorators because of forward compatibility concerns
-- TypeScript developers stuck using legacy experimental decorators because of backward compatibility concerns
+- JavaScript/TypeScript developers not yet using decorators
+- JavaScript developers using decorators with Babel
+- TypeScript developers sticking to using legacy experimental decorators
+- TypeScript developers using standard decorators
 
 This plan needs to address all audiences during the migration.
 
@@ -232,7 +232,7 @@ When all developers can use the standard decorators API we can remove the experi
 ##### Requirements
 
 - Stage III has landed
-- Native decorators are shipping in all major browsers.
+- Native decorators are have been shipping in all major browsers for last 2 major versions.
 
 ##### Changes
 
