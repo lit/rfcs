@@ -56,7 +56,8 @@ This plan needs to address all audiences during the migration.
 After all stages of the implementation plan are complete:
 
 - Standard decorators are the only decorator implementation
-- Decorators are the one way to define reactive properties
+- Decorators are the one _core_ way to define reactive properties
+- Add a non-core utility library that can dynamically create reactive properties
 - Remove `static properties`, `static createProperty()` and associated APIs
 - Remove `static addInitializer()` since the standard decorator API provides this
 - Core decorators (`@property`, `@state`) are exported from the main `reactive-element`, `lit-element` and `lit` modules.
@@ -220,7 +221,8 @@ This stage requires decorators for creating properties. It is no longer usable i
 ##### Changes
 
 - Remove previously deprecated APIs
-- Deprecate `static properties`
+- Deprecate `static properties` in ReactiveElement and LitElement
+- Add a new mixin that supports `static properties` for migration.
 - Re-export `@customElement()`, `@property()` and `@state()` from the main reactive-element, lit-element, and lit modules.
   - This increases the core module size, which is paid for by removing the deprecated APIs.
   - Other decorators are more optional and remain in their own modules.
