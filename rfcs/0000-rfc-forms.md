@@ -10,14 +10,14 @@ Add advanced form validation for web components. This is a followup to the discu
 
 ## Objective
 
-Provide an easy to use dev experience for validating forms with web components in them. 
+Provide an easy-to-use dev experience for validating forms with web components in them. 
 
 ### Goals
 - Provide a common API, so developers can quickly start using the @lit-labs/forms package without changing their existing controls. 
 - Allow cross field validation
 - Allow async validation
 - Get and change state for individual controls
-- Allow for configuration (e. g. when should changes be reflected in the model (when the element looses focus vs when the value of the element changes.))
+- Allow for configuration (e.g. when should changes be reflected in the model (when the element looses focus vs when the value of the element changes.))
 - The API should be type safe. 
 - It should be possible to set initial values for individual controls. 
 - Subscribe to value changes of a control
@@ -30,6 +30,7 @@ Provide an easy to use dev experience for validating forms with web components i
 
 ### Non-Goals
 - The goal is not to provide a set of Validators. Validators should just be pure functions. They can be shared across projects, but it is not a goal to provide a library of common validators with this project.  
+- Build an entire form solution from scratch. The Lit team has voiced no interest in doing this. 
 
 ## Motivation
 
@@ -37,16 +38,16 @@ In enterprise applications forms with complex validations often play a huge part
 
 ## Detailed Design
 
-This is heavily influenced by Angular Reactive Forms. A prototype has been implemented by @UserGalileo here: https://github.com/UserGalileo/lit-reactive-forms
+The idea is to wrap an existing form library. 
 
-### General Overview
+### General Overview for forms
 In general there are three types of form elements:
 
 #### Form group: 
-A form group is the most high level concept. It is a group of form controls. It can also hold form arrays. It combines values and state into single objects. Form groups can be nested. It allows to run validation on all children. State of the children can also be set.  
+A form group is the highest level concept. It is a group of form controls. It can also hold form arrays. It combines values and state into single objects. Form groups can be nested. It allows to run validation on all children. State of the children can also be set.  
 
 #### Form control: 
-This is the most low level concept. This model holds the value and state of an individual control. Changes to the model should be reflected in the rendered control. Validation can be run on this. 
+This is the lowest level concept. This model holds the value and state of an individual control. Changes to the model should be reflected in the rendered control. Validation can be run on this. 
 
 #### Form array: 
 This allows dynamic lists to be part of a form. They act as aggregators similar to a form group, but new children can be added or deleted at runtime. Form array children can either be form controls or form groups. (Form array would also be possible as a child, but not sure this would make sense, it might be a quick win API wise though.)   
@@ -69,37 +70,59 @@ This validator runs on a form group and gets passed all values of the children a
 
 ### How to define a form
 
-#### Defining the model 
-The model for a form can be created similar to Angular Reactive Forms through a `FormBuilder` class. Every control must be initialized with an initial value. The following example is taken from @UserGalilelo's prototype:
+There are multiple competing API suggestions:
+#### Separation of template and form configuration
+```ts
+const form = new FormApi(...);
 
-```js
-fb = new FormBuilder(this);
-
-form = this.fb.group({
-    user: this.fb.group({
-        name: this.fb.control(''),
-        surname: this.fb.control(''),
-    }),
-    consent: this.fb.control(false)
-}, {
-    validators: [],
-    asyncValidators: [],
+// Validation logic
+const fieldA = new FieldApi({
+  form,
+  ...whateverElse
 });
 
+const fieldB = new FieldApi({
+  form,
+  ...whateverElse
+});
 
-// Binding (dotted syntax for nested FormGroups)
-render() {
-  const { bind } = this.form;
-  
-  return html`
-    <input type="text" ${bind('user.name')}>
-    <input type="text" ${bind('user.surname')}>
-    <input type="text" ${bind('consent')}>
-  `
-}
+return html`
+  <form @submit=${() => form.handleSubmit()}>
+    <!-- Templating logic -->
+    <label for=${fieldA.name}>Field A</label>
+    <input name=${fieldA.name}>
+
+    <label for=${fieldB.name}>Field B</label>
+    <textarea name=${fieldB.name}></textarea>
+  </form>
+`;
 ```
 
-The model and the elements are connected by use of a directive. There is an additional directive which simplifies rendering a form array, similar to `repeat` which takes an instance of form array as a parameter and as a second parameter takes a render function, which the directive uses to render an individual item of the form array. 
+#### Field configuration inside the template
+This is closer to how other Tanstack Form adapters currently work:
+```ts
+const form = new FormApi(...);
+
+return html`
+  <form @submit=${() => form.handleSubmit())}>
+    <!-- Templating logic AND validation logic in one place -->
+    ${form.Field({onChange: z.string().min(1), render: (fieldA) => html`
+    <label for=${fieldA.name}>Field A</label>
+    <input name=${fieldA.name}>
+`})}
+  </form>
+`;
+```
+
+### bind directive 
+To make syncing form elements and the form model easier, the idea is to create a `bind`directive that automatically connects the two:
+
+```js
+// field is the instance of the form field
+<input type="text" ${bind(field)}>
+```
+
+The model and the elements are connected by use of the directive. 
 
 The `bind` directive subscribes to changes to the element via event listeners and updates the model accordingly. There is an abstraction called an accessor, which can be defined for web components specifying details like
 - change event
@@ -110,10 +133,21 @@ The `bind` directive subscribes to changes to the element via event listeners an
 
 Similarly, if the model is updated, the directive will update the element. 
 
-## Implementation Considerations
-So far the only feature that really is Lit-dependant is the use of directives. Maybe directives can be provided, but potentially an API along the lines of `formControl.registerElement(htmlElement)` can be provided as a substitute to support none Lit environments?
+An additional idea is that the directive could be cross-form-wrapper: An interface how to represent a model could be defined that works across multiple form-integrations. 
 
-The prototype uses `rxjs` heavily. Is an external dependency a problem / show stopper?  
+### Potential field array directive
+Potentially an additional directive could be created which simplifies rendering a form array, similar to `repeat` directive. It would take the field instance that is an array as a parameter. As a second parameter it would take a render function, which the directive uses to render an individual item of the form array.
+## Implementation Considerations
+A form library to base the wrapper on needs to be decided. So far POCs for `final-form` and `@tanstack/form-core` have been created.
+
+With `final-form`a lack of type safety of the defined form was apparent.
+
+`@tanstack/form-core` is still in heavy development with a prospective version 1.0 release in December or early next year.
+
+If the API `Field configuration inside the template` is chosen the wrapper could be an official Tanstack Form adapter that would live in the Tanstack Form repo. If the other API is chosen they adapter would have to live in the `Lit`-repo.
+
+Other form solutions can be suggested in this RFC. 
+
 
 ### Implementation Plan
 
@@ -145,8 +179,9 @@ A pretty good README should be part of the npm package.
 
 ## Downsides
 
-This approach is quite oppinionated. It doesn't neccessarily live close to the web standards. It more tries to improve developer experience in enterprise contexts. 
+A wrapper probably does mean that some compromises about implementation or developer experience need to be made.
 
 ## Alternatives
 
-An approach similar to Formik, where the model is defined in the template and the validation is a simple function (that's not part of the model) was considered, but was after an initial proof of concept abandoned due to complexities involving nesting of controls, grouping controls together or having a dynamic list of form controls. 
+A previous version of this RFC explored building an entirely lit-focused library from scratch. Due to missing interest and expertise this was ultimately abandoned. 
+
