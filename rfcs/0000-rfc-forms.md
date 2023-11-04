@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: christian24
-PR: {{ update_with_pr_number }}
+PR: #8
 ---
 
 # @lit-labs/forms
