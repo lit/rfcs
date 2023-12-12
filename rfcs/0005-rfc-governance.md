@@ -6,7 +6,7 @@ PR: {{ update_with_pr_number }}
 
 # Governance
 
-Update & clarify Lit's governance mode
+Update & clarify Lit's governance model
 
 ## Objective
 
@@ -21,20 +21,17 @@ role in deciding the future of Lit. While Google owns and operates the Lit
 project repo, project roles are open to all contributors.
 
 ### Goals
-- Specific goals of the RFC
 
-TODO
+To codify and document Lit's governance model
 
 ### Non-Goals
-- Specific non-goals of the RFC
 
-TODO
+Anything beyond that scope
+
 
 ## Motivation
 
-Why is the RFC necessary? What background information is needed to understand why?
-
-TODO
+See [#Objective](Objective).
 
 ## Detailed Design
 
@@ -45,7 +42,7 @@ the PR).
 
 ### GOVERNANCE.md
 
-### Mission, Vision, Values
+#### Mission, Vision, Values
 
 We seek to build a better, lower-friction web platform by promoting
 interoperable standards for existing and emergent developer needs. Whereas most
@@ -71,25 +68,25 @@ to the people, not their employer. This includes members of the Lit team at
 Google; not all members of the team will be project Members or Maintainers, and
 they will go through the process outlined here to achieve additional roles.
 
-### How We Work
+#### How We Work
 
 Lit strives to operate in the open, with full transparency to all members of
 our community.
 
-#### Issues and Tasks
+##### Issues and Tasks
 
 These are tracked in Github and visible to all. We hold weekly engineering (see
 our [calendar](https://lit.dev/community-calendar/) meetings where Members and
 Maintainers review progress and discuss open topics. 
 
-#### Features / Substantial Changes
+##### Features / Substantial Changes
 
 Lit uses a Request for Comment process (RFC) to evaluate substantial changes to
 the project, including governance.  Any community member may open an RFC, and
 we welcome input from all. Approval of them is limited to Maintainers; an RFC
 is approved when more than half of all Maintainers vote to approve the RFC.
 
-#### Releases
+##### Releases
 
 The project uses a monorepo that is generally in a state such that it can be
 released at any time. Releases are typically done at ad-hoc intervals based on
@@ -98,7 +95,7 @@ are rare and are done with large community awareness and outreach.
 
 The release process is driven by the Maintainers of Lit.
 
-#### Communication
+##### Communication
 
 Github is our “source of truth” for project discussions and decisions. At times
 when a quick answer is needed, we have a Discord available for chat. We
@@ -107,7 +104,7 @@ issue or RFC for the question you raise. This is so that all in the community
 are able to be involved in the discussion, and decisions are not made in silos,
 and so we have durable records of the discussions and decisions reached.  
 
-### Contributors
+#### Contributors
 
 In order to facilitate contributions at different levels, we have set up
 different project roles at various levels of involvement. Community members
@@ -125,7 +122,7 @@ We do not expect this to be a static list of roles - as Lit continues to
 evolve, so will our project needs. We will leverage our RFC process to document
 these changes.
 
-#### User
+##### User
 
 Our users are the most important role of Lit - without users, Lit is not
 useful. Anyone can be a user and there are no special requirements.
@@ -145,7 +142,7 @@ We ask that all of our users follow our [Code of
 Conduct](https://github.com/lit/lit/blob/main/CODE_OF_CONDUCT.md) when
 interacting with the project.
 
-#### Contributor
+##### Contributor
 
 A Contributor contributes directly to the project in some way. These
 contributions don’t have to be code, but they can be - commenting on PRs,
@@ -157,7 +154,7 @@ this is not the exhaustive list of project contributors.
 When making a contribution, please follow our [Contribution
 Guide](https://github.com/lit/lit/blob/main/CONTRIBUTING.md).
 
-#### Member
+##### Member
 
 A Member of the Lit project is a Contributor with recognized, consistent
 contributions to the project. They are actively pushing to the project, and
@@ -177,7 +174,7 @@ creating a PR to amend `MEMBERS.md`); a majority of all Members is required to
 approve that PR.
 
 
-#### Maintainer
+##### Maintainer
 
 Maintainers are very established contributors who are responsible for the
 entire project. 
@@ -194,7 +191,7 @@ an individual is ready to join the Maintainers list, they should nominate them
 (by creating a PR to amend `MAINTAINERS.md`). A majority of all Maintainers are
 required to approve the PR adding the new Maintainer.
 
-#### Stepping Down / Removal
+##### Stepping Down / Removal
 
 If and when a Member or Maintainer’s commitment levels change, they can
 consider stepping down (moving down the contributor ladder) or moving to
@@ -203,7 +200,7 @@ emeritus status (completely stepping away from the project).
 Contact the Maintainers about changing to Emeritus status, or reducing your
 contributor level.
 
-#### Involuntary Removal or Demotion
+##### Involuntary Removal or Demotion
 
 Involuntary removal/demotion of a contributor happens when responsibilities and
 requirements aren't being met. This may include repeated patterns of
@@ -236,52 +233,44 @@ rictic
 usergenic
 sorvell
 
-END END
-END END
-END END
-END END
-END END
-END END
-END END
-END END
-END END
-
 ## Implementation Considerations
 
 ### Implementation Plan
 
-Is there anything important to note about implementation plan? Can it be done in a single PR or will it need to be staged out across several?
+The core of this change will be a single PR to the main Lit repository.
+
+Other aspects will involve gradual changes in our processes - as more community
+members join our Maintainers, the project will evolve to accomodate them.
 
 ### Backward Compatibility
 
-Backwards compatibility is extremely important to Lit, especially in the core libraries. Does this proposal break backwards compatibility? Are there workarounds?
+There are no backwards compatibility concerns.
 
 ### Testing Plan
 
-How will this proposal be tested? Are unit tests sufficient, or do we need integration tests? Is any unique testing infrastructure required?
+This proposal will be tested live.
 
 ### Performance and Code Size Impact
 
-What impact will this proposal have on performance and code size? What benchmarks should we create to evaluate the proposal?
+None.
 
 ### Interoperability
 
-Is this proposal for a feature that could be interoperable across web components not written in Lit? Does it create a tight coupling between components written in Lit? Could it be a [Web Components Community Group](https://github.com/w3c/webcomponents-cg) [Community Protocol](https://github.com/webcomponents-cg/community-protocols)?
+N/A
 
 ### Security Impact
 
-What impact will this proposal have on security? Does the proposal require a security review? (We have a security team available for reviews)
-
-We especially care about the handling of untrusted user input by library code so that we contnue to prevent XSS vectors.
+N/A
 
 ### Documentation Plan
 
-Do we need to create or update any documentation to complete this proposal? Does related documentation have a clear home in our docs outline? What playground examples or tutorials should be created?
+No documentation needs to be added
 
 ## Downsides
 
-Many proposals involve trade-offs. What are they for this proposal and what are the downsides of this approach?
+We don't believe there are any downsides to this plan.
 
 ## Alternatives
 
-What alternatives were considered and rejected? Why?
+The obvious alternative would be to leave governance as it is today. However, we believe
+that this change is positive - see [#Objective](Objective) for the motivation.
