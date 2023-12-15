@@ -22,12 +22,11 @@ project repo, project roles are open to all contributors.
 
 ### Goals
 
-To codify and document Lit's governance model
+To codify and document Lit's governance model.
 
 ### Non-Goals
 
-Anything beyond that scope
-
+Anything outside of that scope.
 
 ## Motivation
 
@@ -35,12 +34,13 @@ See [#Objective](Objective).
 
 ## Detailed Design
 
-If this RFC is accepted, we will propose a PR for further iteration, using the
+If this RFC is accepted, we will propose a PR in the main
+[https://github.com/lit/lit](Lit repo) for further iteration, using the
 language here as a starting point. This RFC also includes initial lists of
-Members and Maintainers (which will become `MEMBERS.md` and `MAINTAINERS.md` in
-the PR).
+Members and Maintainers which will become `MEMBERS.md` and `MAINTAINERS.md` in
+the PR.
 
-### GOVERNANCE.md
+### GOVERNANCE.md Contents
 
 #### Mission, Vision, Values
 
@@ -76,7 +76,7 @@ our community.
 ##### Issues and Tasks
 
 These are tracked in Github and visible to all. We hold weekly engineering (see
-our [calendar](https://lit.dev/community-calendar/) meetings where Members and
+our [calendar](https://lit.dev/community-calendar/)) meetings where Members and
 Maintainers review progress and discuss open topics. 
 
 ##### Features / Substantial Changes
@@ -240,8 +240,8 @@ sorvell
 The core of this change will be a single PR to the main Lit repository.
 
 Other aspects will involve gradual changes in our processes - as more community
-members join our Maintainers, and as we gather feedback from these new
-Maintainers, the project will grow and evolve to accomodate them.
+members join our Maintainers, and as we gather feedback from these new Members
+and Maintainers, the project will grow and evolve to accomodate them.
 
 ### Backward Compatibility
 
@@ -265,7 +265,7 @@ N/A
 
 ### Documentation Plan
 
-No documentation needs to be added
+No documentation needs to be added.
 
 ## Downsides
 
