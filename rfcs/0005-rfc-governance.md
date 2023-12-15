@@ -170,7 +170,7 @@ We ask that our Members continue to support and mentor our Contributors, to
 help them grow into Members as well. This includes prioritizing reviews, and
 providing good feedback on those reviews. When a Member believes that an
 individual is ready to join the Members list, they should nominate them (by
-creating a PR to amend `MEMBERS.md`); a majority of all Members is required to
+creating a PR to amend `MEMBERS.md`); a majority Maintainers are required to
 approve that PR.
 
 
@@ -218,19 +218,19 @@ current Maintainers.
 bencbradshaw
 benjamind
 bennypowers
+bicknellr
+usergenic
 
 ### Proposed `MAINTAINERS.md`
 
 AndrewJakubowicz
 augustjk
-bicknellr
 dfreedm
 e111077
 graynorton
 justinfagnani
 kevinpschaaf
 rictic
-usergenic
 sorvell
 
 ## Implementation Considerations
@@ -240,7 +240,8 @@ sorvell
 The core of this change will be a single PR to the main Lit repository.
 
 Other aspects will involve gradual changes in our processes - as more community
-members join our Maintainers, the project will evolve to accomodate them.
+members join our Maintainers, and as we gather feedback from these new
+Maintainers, the project will grow and evolve to accomodate them.
 
 ### Backward Compatibility
 
