@@ -115,11 +115,11 @@ recognizing when their contributions warrant a new role in the project.
 
 We value transparency and openness in the Lit project, and as a result on the
 rare occasion that exceptions must be made to this incremental progression
-(e.g., a new maintainer is urgently needed or a new sub-project is accepted) we
+(e.g., a new Maintainer is urgently needed or a new sub-project is accepted) we
 will still follow the open process for joining at the required level. 
 
 We do not expect this to be a static list of roles - as Lit continues to
-evolve, so will our project needs. We will leverage our RFC process to document
+evolve, so will our project needs. We will leverage our RFC process to propose
 these changes.
 
 ##### User
@@ -173,7 +173,6 @@ individual is ready to join the Members list, they should nominate them (by
 creating a PR to amend `MEMBERS.md`); a majority Maintainers are required to
 approve that PR.
 
-
 ##### Maintainer
 
 Maintainers are very established contributors who are responsible for the
@@ -223,6 +222,7 @@ usergenic
 
 ### Proposed `MAINTAINERS.md`
 
+aomarks
 AndrewJakubowicz
 augustjk
 dfreedm
