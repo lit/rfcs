@@ -1,6 +1,6 @@
 # Router
 
-This RFC describes the proposed new `@lit-labs/router` package.
+This RFC describes the new API that is proposed for the `@lit-labs/router` package.
 
 ## Objective
 
