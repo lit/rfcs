@@ -211,6 +211,22 @@ while also opens up opportunities for new contributors to step in.
 Involuntary removal or demotion is handled through a vote by a majority of the
 current Maintainers.
 
+# Technical Steering Committee
+To gather needs, prioritization, and insight from our key partners and
+large-scale users, Lit will form a Technical Steering Committee (TSC). This
+will be a parallel organization to our User, Contributor, Member, Maintainer
+ladder specified [above](#Contributor).
+
+Members of the TSC will join quarterly sessions with the Maintainers where
+we’ll review what the team has accomplished, discuss new initiatives, and
+overall project strategy. The Maintainers (or other project Members) may also
+ask for advice from one or more of the TSC members, or as a second opinion if
+there are technical or strategic decisions that must be made.
+
+As the day-to-day responsibilities rest with the Maintainers, approving new
+members of the TSC is done by a majority of Maintainers, as are involuntary
+removal or demotion (if needed).
+
 ### Proposed `MEMBERS.md`
 
 43081j
@@ -273,5 +289,6 @@ We don't believe there are any downsides to this plan.
 
 ## Alternatives
 
-The obvious alternative would be to leave governance as it is today. However, we believe
-that this change is positive - see [#Objective](Objective) for the motivation.
+The obvious alternative would be to leave governance as it is today. However,
+we believe that this change is positive - see [#Objective](Objective) for the
+motivation.
