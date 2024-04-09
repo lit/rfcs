@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: "@justinfagnani"
-PR: TBD
+PR: https://github.com/lit/rfcs/pull/39
 ---
 
 # Standard Signals
@@ -66,31 +66,39 @@ Conceptually, we want to run the reactive update lifecycle in an effect so that 
 We can do this with an override of `performUpdate()` that wraps ReactiveElement's implementation in a watched computed signal:
 
 ```ts
-  abstract class SignalWatcher extends Base {
-    private __watcher = new Signal.subtle.Watcher(() => {
-      this.requestUpdate();
-    });
-    private __updateSignal = new Signal.Computed(() => {
-      super.performUpdate();
-    });
+abstract class SignalWatcher extends Base {
+  // Watcher.watch() doesn't dedupe :(
+  private __watching = false;
+  private __watcher = new Signal.subtle.Watcher(() => {
+    this.requestUpdate();
+  });
+  private __updateSignal = new Signal.Computed(() => {
+    super.performUpdate();
+  });
 
-    override performUpdate() {
-      if (this.isUpdatePending === false) {
-        return;
-      }
-      this.__updateSignal.get();
+  override performUpdate() {
+    if (this.isUpdatePending === false) {
+      return;
     }
-
-    override connectedCallback(): void {
-      this.__watcher.watch(this.__updateSignal);
-      super.connectedCallback();
-    }
-
-    override disconnectedCallback(): void {
-      this.__watcher.unwatch(this.__updateSignal);
-      super.disconnectedCallback();
-    }
+    this.__updateSignal.get();
   }
+
+  override connectedCallback(): void {
+    if (!this.__watching) {
+      this.__watching = true;
+      this.__watcher.watch(this.__updateSignal);
+    }
+    super.connectedCallback();
+  }
+
+  override disconnectedCallback(): void {
+    if (this.__watching) {
+      this.__watching = false;
+      this.__watcher.unwatch(this.__updateSignal);
+    }
+    super.disconnectedCallback();
+  }
+}
 ```
 
 ### watch() directive
