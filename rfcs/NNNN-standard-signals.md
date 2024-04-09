@@ -142,7 +142,7 @@ No impact on core library size or performance.
 
 ### Interoperability
 
-This RFC greatly improves on interoperability compared to the `@lit-labs/react-signals` package.
+This RFC greatly improves on interoperability compared to the `@lit-labs/preact-signals` package.
 
 ### Security Impact
 
