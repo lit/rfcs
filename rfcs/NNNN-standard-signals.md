@@ -114,7 +114,9 @@ Instead the updates must be asynchronous, but they can still be fine-grained. In
 
 Auto-watching versions of `html` and `svg` template tags will scan a template result's values and automatically wrap them in a `watch()` directive if they are signals.
 
-We should be able to detect signals with `value instanceof Signal`. While the `instanceof` operator is fragile, especially in the presence of multiple copies of a module or multiple realms, the proposal doesn't include a `Signal.isSignal()` helper yet.
+We should be able to detect signals with `value instanceof Signal`. While the `instanceof` operator is fragile, especially in the presence of multiple copies of a module or multiple realms, the signals proposal doesn't include a `Signal.isSignal()` helper yet.
+
+It may sometimes be neccessary to forward a signal object through a binding, rather than watching it. To support this we will add a special object to box signals to indicate that they should be passed directly to the part. A `signalRef()` function will box the signal at at the binding site. This would only work with property bindings.
 
 ## Implementation Considerations
 
