@@ -33,7 +33,7 @@ Lit doesn't have this problem. Instead of a VDOM diff against the whole DOM tree
 
 Where signals can possibly be a major improvement for component authoring is as a shared observable state primitive. This may also have some performance benefits by allowing state updates via signals to bypass the top-down rendering of the component tree.
 
-Lit doesn't have a built-in or endorsed shared *observable* state system. Properties can be passed down a component tree, and the `@lit-labs/context` package allows sharing of values across a tree, but to observe changes to the individual data objects themselves, developers have to choose from a number of possible solutions, such as:
+Lit doesn't have a built-in or endorsed shared *observable* state system. Properties can be passed down a component tree, and the `@lit/context` package allows sharing of values across a tree, but to observe changes to the individual data objects themselves, developers have to choose from a number of possible solutions, such as:
 
 * State management libraries like Redux or MobX
 * Observables like RxJS
