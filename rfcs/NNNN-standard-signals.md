@@ -120,7 +120,7 @@ We should be able to detect signals with `value instanceof Signal`. While the `i
 
 ### Implementation Plan
 
-Implementation should be straight forward. We'll create a new `@lit/labs/signals` package with the three APIs proposed here. There is nothing needed in core to support this.
+Implementation should be straight forward. We'll create a new `@lit-labs/signals` package with the three APIs proposed here. There is nothing needed in core to support this.
 
 #### lit-analyzer
 
