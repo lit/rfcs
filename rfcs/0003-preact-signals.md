@@ -1,5 +1,5 @@
 ---
-Status: Active
+Status: Accepted
 Champions: "@justinfagnani @rictic"
 PR: https://github.com/lit/rfcs/pull/19
 ---
