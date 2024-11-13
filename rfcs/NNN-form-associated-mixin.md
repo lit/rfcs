@@ -1,7 +1,7 @@
 ---
 Status: Active
 Champions: @justinfagnani
-PR: {{ update_with_pr_number }}
+PR: https://github.com/lit/rfcs/pull/45
 ---
 
 # Form Associated Mixin
@@ -22,7 +22,7 @@ elements.
   - Check and update element validity
   - Implementing disable, reset, and restore behavior
 - Allow an element to have complete control over its public API.
-- Optionally, allow an element ot opt-in to best-practice public APIs that match
+- Optionally, allow an element to opt-in to best-practice public APIs that match
   built-in form element APIs.
 
 ### Non-Goals
@@ -112,8 +112,9 @@ class MyFormElement extends FormAssociated(LitElement) {
 }
 ```
 
-Becauase decorators are used to denote the important form fields, name of the form value field does not need to be `value`. For instance, a checkbox element could
-use the field `checked`:
+Because decorators are used to denote the important form fields, the name of the
+form value field does not need to be `value`. For instance, a checkbox element
+could use the field `checked`:
 
 
 ```ts
