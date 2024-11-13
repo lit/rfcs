@@ -149,14 +149,48 @@ The `FormAssociated()` mixin defines `static formAssociated = true`
 
 #### ElementInternals
 
-The `FormAssociated()` mixin needs access to `ElementInternals`, so it calls `this.attachInternals()` in the constructor.
+The `FormAssociated()` mixin needs access to `ElementInternals`, so it must call
+`this.attachInternals()` in the constructor.
 
-Elements applying the mixin may also need access to internals, but
-`attachInternals()` is only allowed to be called once so that outside callers
-cannot access internals, so a `getInternals()` utility is provided to get them.
+Elements applying the `FormAssociated()` mixin and other mixins may also need
+access to internals, but `attachInternals()` is only allowed to be called once
+so that outside callers cannot access internals.
 
-To discourage use of `getInternals()` by outside code, it must be called with a
-reference to the class and can only be be called once per class.
+We could vend a utility to get internals, but all mixins on an element would
+have to use that utility, creating either an incompatibility or an ad-hoc
+protocol.
+
+In order to be compatible with other code that calls `attachInternals()` a way
+that would be allowed locally, we can override `attachInternals()` to allow
+just one more call.
+
+<detail>
+
+  <summary>
+  
+  Example `attachInternals()` override
+  
+  </summary>
+
+```ts
+const FormAssociated = (base) => class extends base {
+  #internals = super.attachInternals();
+  #attachInternalsCalled = false;
+
+  attachInternals() {
+    if (this.#attachInternalsCalled) {
+      throw new DOMException(
+        `Failed to execute 'attachInternals' on 'HTMLElement': ` +
+          `ElementInternals for the specified element was already attached.`,
+        'NotSupportedError');
+    }
+    this.#attachInternalsCalled = true;
+    return this.#internals;
+  }
+}
+```
+
+</detail>
 
 #### Form Value
 
