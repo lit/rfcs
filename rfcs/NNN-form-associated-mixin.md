@@ -167,8 +167,8 @@ just one more call.
 <details>
 
   <summary>
-  
-  Example `attachInternals()` override
+
+  ##### Example `attachInternals()` override
   
   </summary>
 
