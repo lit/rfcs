@@ -164,7 +164,7 @@ In order to be compatible with other code that calls `attachInternals()` a way
 that would be allowed locally, we can override `attachInternals()` to allow
 just one more call.
 
-<detail>
+<details>
 
   <summary>
   
@@ -190,7 +190,7 @@ const FormAssociated = (base) => class extends base {
 }
 ```
 
-</detail>
+</details>
 
 #### Form Value
 
