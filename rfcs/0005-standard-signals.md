@@ -101,6 +101,10 @@ class SignalWatcher extends Base {
 }
 ```
 
+### effect(callback, options)
+
+An `effect` re-runs the provided callback any time signals accessed inside the callback are set. Effects run a microtask after any signals change. `effect` returns a dispose funcction which can be called to stop the effect from running. By providing `options`, an effect can be associated with an `element` and coordinated with its update cycle.
+
 ### watch() directive
 
 The `watch()` async directive accepts a signal and renders its value _asynchronously_ to the containing binding. When the signal changes, the binding value is updated directly.
